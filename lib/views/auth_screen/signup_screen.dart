@@ -99,8 +99,9 @@ class SignupScreen extends StatelessWidget {
           ),
         ),
       ).onTap(() {
-        if (FocusScope.of(context).hasPrimaryFocus) {
-          FocusScope.of(context).unfocus();
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
         }
       }),
     );
