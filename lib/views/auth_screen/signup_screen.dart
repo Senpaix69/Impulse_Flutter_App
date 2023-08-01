@@ -98,7 +98,11 @@ class SignupScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      ).onTap(() {
+        if (FocusScope.of(context).hasPrimaryFocus) {
+          FocusScope.of(context).unfocus();
+        }
+      }),
     );
   }
 }
