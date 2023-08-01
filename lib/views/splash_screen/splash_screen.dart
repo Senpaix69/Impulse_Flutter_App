@@ -10,17 +10,36 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<Offset> _textAnimation;
+
   void changeScreen() {
     Future.delayed(
       const Duration(seconds: 3),
-      () => Get.to(() => const LoginScreen()),
+      () => Get.off(() => const LoginScreen()),
     );
   }
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 2000,
+      ),
+    );
+    _textAnimation = Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _animationController.forward(from: 0.0);
     changeScreen();
   }
 
@@ -38,9 +57,23 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           20.heightBox,
-          appLogoWidget(),
-          10.heightBox,
-          appname.text.color(whiteColor).size(20).fontFamily(bold).make(),
+          FadeTransition(
+            opacity: _animationController,
+            child: Column(
+              children: <Widget>[
+                appLogoWidget(),
+                10.heightBox,
+                SlideTransition(
+                  position: _textAnimation,
+                  child: appname.text
+                      .color(whiteColor)
+                      .size(20)
+                      .fontFamily(bold)
+                      .make(),
+                ),
+              ],
+            ),
+          ),
           const Spacer(),
           credits.text.color(whiteColor).size(16).fontFamily(bold).make(),
           20.heightBox,

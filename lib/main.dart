@@ -3,6 +3,7 @@ import 'package:impulse/consts/consts.dart';
 import 'package:impulse/views/splash_screen/splash_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

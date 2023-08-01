@@ -43,23 +43,23 @@ class SignupScreen extends StatelessWidget {
                           children: <TextSpan>[
                             TextSpan(
                               text: "I agree to the ",
-                              style:
-                                  TextStyle(fontFamily: bold, color: fontGrey),
+                              style: TextStyle(
+                                  fontFamily: regular, color: fontGrey),
                             ),
                             TextSpan(
                               text: termsAndConditions,
                               style: TextStyle(
-                                  fontFamily: bold, color: mehroonColor),
+                                  fontFamily: regular, color: mehroonColor),
                             ),
                             TextSpan(
                               text: " & ",
-                              style:
-                                  TextStyle(fontFamily: bold, color: fontGrey),
+                              style: TextStyle(
+                                  fontFamily: regular, color: fontGrey),
                             ),
                             TextSpan(
                               text: privacyPolicy,
                               style: TextStyle(
-                                  fontFamily: bold, color: mehroonColor),
+                                  fontFamily: regular, color: mehroonColor),
                             ),
                           ],
                         )),
