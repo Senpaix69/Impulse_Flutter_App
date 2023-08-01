@@ -1,4 +1,5 @@
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/widget_common/input_decoration.dart';
 
 Widget customTextField({
   required String hint,
@@ -16,24 +17,10 @@ Widget customTextField({
       TextFormField(
         obscureText: obsecure,
         controller: controller,
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            icon: Icon(suffixIcon),
-            onPressed: onPress,
-          ),
-          contentPadding: const EdgeInsets.all(12),
-          hintStyle: const TextStyle(
-            fontFamily: semibold,
-            color: fontGrey,
-          ),
+        decoration: inputDecoration(
+          suffixIcon: suffixIcon,
+          onPress: onPress,
           hintText: hintText,
-          isDense: true,
-          fillColor: lightGrey,
-          filled: true,
-          border: const OutlineInputBorder(
-            borderSide: BorderSide(color: mehroonColor),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
         ),
       ),
     ],

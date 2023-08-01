@@ -1,6 +1,8 @@
 const appname = "Impulse";
 const appversion = "Version 1.0.0";
 const credits = "Zai Systems";
+
+// login - Signup constants
 const email = "Email";
 const emailHint = "user@gmail.com";
 const password = "Password";
@@ -16,3 +18,10 @@ const nameHint = "Enter name";
 const privacyPolicy = "Privacy Policy";
 const termsAndConditions = "Terms and Conditions";
 const alreadyHaveAcc = "Already have an account";
+
+// home screen constants
+const searchHint = "Search anything";
+const todayDeal = "Today's Deal", flashSale = "Flash Sale";
+const topSeller = "Top Sellers",
+    topCategory = "Top Categories",
+    topBrands = "brands";

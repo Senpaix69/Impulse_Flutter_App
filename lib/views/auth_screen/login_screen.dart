@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/consts/social_list.dart';
+import 'package:impulse/consts/lists.dart';
 import 'package:impulse/views/auth_screen/signup_screen.dart';
-import 'package:impulse/views/auth_screen/controller/password_controller.dart';
+import 'package:impulse/controllers/auth_controller/password_controller.dart';
+import 'package:impulse/views/home_screen/home.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 import 'package:impulse/widget_common/custom_button.dart';
@@ -48,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       customButton(
-                        onPress: () {},
+                        onPress: () => Get.offAll(() => const Home()),
                         title: login,
                         btnColor: mehroonColor,
                         textColor: whiteColor,
