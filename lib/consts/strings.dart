@@ -23,3 +23,6 @@ const alreadyHaveAcc = "Already have an account";
 const searchHint = "Search anything";
 const todayDeal = "Today's Deal", flashSale = "Flash Sale";
 const topSeller = "Sellers", topCategory = "Categories", topBrands = "brands";
+const featuredCategories = "Featured Categories";
+const featuredProducts = "Featured Products";
+const allProducts = "All Products";

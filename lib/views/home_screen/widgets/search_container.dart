@@ -4,8 +4,8 @@ import 'package:impulse/widget_common/applogo_widget.dart';
 Widget searchContainer() {
   return SafeArea(
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      height: 40,
       alignment: Alignment.center,
       child: Row(
         children: <Widget>[

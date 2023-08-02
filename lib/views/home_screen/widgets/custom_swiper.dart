@@ -2,7 +2,7 @@ import 'package:impulse/consts/consts.dart';
 
 VxSwiper customSwiper({required List sliderList}) {
   return VxSwiper.builder(
-    viewportFraction: 0.92,
+    viewportFraction: 0.85,
     autoPlayAnimationDuration: const Duration(milliseconds: 500),
     autoPlay: true,
     height: 140,

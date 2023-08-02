@@ -19,7 +19,7 @@ class SignupScreen extends StatelessWidget {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  (context.screenHeight * 0.08).heightBox,
+                  (context.screenHeight * 0.07).heightBox,
                   appLogoWidget(),
                   20.heightBox,
                   Column(

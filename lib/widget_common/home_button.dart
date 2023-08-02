@@ -10,7 +10,7 @@ Widget homeButton({
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Image.asset(icon, width: 26),
-      20.heightBox,
+      10.heightBox,
       title.text
           .align(TextAlign.center)
           .fontFamily(semibold)
