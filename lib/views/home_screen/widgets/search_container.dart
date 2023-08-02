@@ -1,37 +1,39 @@
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/widget_common/applogo_widget.dart';
 
-Container searchContainer() {
-  return Container(
-    color: whiteColor,
-    height: 40,
-    alignment: Alignment.center,
-    child: Row(
-      children: <Widget>[
-        Image.asset(
-          icAppLogo,
-          height: 30,
-        ),
-        10.widthBox,
-        Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(12),
-              suffixIcon: const Icon(
-                Icons.search,
-                color: fontGrey,
-              ),
-              hintText: searchHint,
-              hintStyle: const TextStyle(fontFamily: regular),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: lightGrey,
+Widget searchContainer() {
+  return SafeArea(
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      height: 50,
+      alignment: Alignment.center,
+      child: Row(
+        children: <Widget>[
+          appLogoWidget().box.width(50).make(),
+          10.widthBox,
+          Expanded(
+            child: TextFormField(
+              decoration: InputDecoration(
+                fillColor: whiteColor,
+                filled: true,
+                contentPadding: const EdgeInsets.all(12),
+                suffixIcon: const Icon(
+                  Icons.search,
+                  color: fontGrey,
                 ),
-                borderRadius: BorderRadius.circular(10.0),
+                hintText: searchHint,
+                hintStyle: const TextStyle(fontFamily: regular),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: lightGrey,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
