@@ -2,8 +2,10 @@ import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/home_controller/home_controller.dart';
 import 'package:impulse/views/cart_screen/cart_screen.dart';
-import 'package:impulse/views/category_screen/category_screen.dart';
+import 'package:impulse/views/deals_screen/deals_screen.dart';
+import 'package:impulse/views/explore_screen/explore_screen.dart';
 import 'package:impulse/views/home_screen/home_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:impulse/views/profile_screen/profile_screen.dart';
 
 class Home extends StatelessWidget {
@@ -14,35 +16,42 @@ class Home extends StatelessWidget {
     final controller = Get.put(HomeController());
 
     final navItems = [
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icHome,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home,
+            size: 26,
           ),
           label: "Home"),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icCategories,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.travel_explore,
+            size: 26,
           ),
-          label: "Category"),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icCart,
-            width: 26,
+          label: "Explore"),
+      const BottomNavigationBarItem(
+          icon: FaIcon(
+            FontAwesomeIcons.tag,
+            size: 23,
+          ),
+          label: "Deals"),
+      const BottomNavigationBarItem(
+          icon: FaIcon(
+            FontAwesomeIcons.cartShopping,
+            size: 23,
           ),
           label: "Cart"),
-      BottomNavigationBarItem(
-          icon: Image.asset(
-            icProfile,
-            width: 26,
+      const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            size: 26,
           ),
           label: "Profile"),
     ];
 
     final navBody = [
       const HomeScreen(),
-      const CategoryScreen(),
+      const ExploreScreen(),
+      const DealsScreen(),
       const CartScreen(),
       const ProfileScreen(),
     ];

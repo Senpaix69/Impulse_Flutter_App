@@ -22,6 +22,4 @@ const alreadyHaveAcc = "Already have an account";
 // home screen constants
 const searchHint = "Search anything";
 const todayDeal = "Today's Deal", flashSale = "Flash Sale";
-const topSeller = "Top Sellers",
-    topCategory = "Top Categories",
-    topBrands = "brands";
+const topSeller = "Sellers", topCategory = "Categories", topBrands = "brands";
