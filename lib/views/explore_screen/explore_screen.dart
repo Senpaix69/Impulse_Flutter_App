@@ -1,12 +1,72 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:impulse/consts/consts.dart';
+import 'package:impulse/controllers/home_controller/home_controller.dart';
+import 'package:impulse/widget_common/bg_widget.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
+    final controller = Get.put(HomeController());
+
+    void goToHome() {
+      controller.currentNavIndex.value = 0;
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        goToHome();
+        return false;
+      },
+      child: bgWidget(
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: whiteColor),
+              onPressed: goToHome,
+            ),
+            title:
+                "Explorer".text.color(whiteColor).fontFamily(semibold).make(),
+          ),
+          body: Container(
+            padding: const EdgeInsets.all(10),
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: 9,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 8.0,
+                mainAxisExtent: 190,
+                crossAxisSpacing: 8.0,
+              ),
+              itemBuilder: (context, index) => Column(
+                children: <Widget>[
+                  Image.asset(
+                    categoriesListImgs[index],
+                    height: 120,
+                    width: 200,
+                    fit: BoxFit.cover,
+                  ),
+                  10.heightBox,
+                  categoriesList[index]
+                      .text
+                      .color(darkFontGrey)
+                      .align(TextAlign.center)
+                      .make(),
+                ],
+              )
+                  .box
+                  .white
+                  .rounded
+                  .padding(const EdgeInsets.all(6))
+                  .outerShadowSm
+                  .clip(Clip.antiAlias)
+                  .make(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

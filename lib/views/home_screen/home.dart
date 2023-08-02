@@ -58,8 +58,7 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       body: Column(children: <Widget>[
-        Obx(() => Expanded(
-            child: navBody.elementAt(controller.currentNavIndex.value))),
+        Obx(() => Expanded(child: navBody[controller.currentNavIndex.value])),
       ]),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

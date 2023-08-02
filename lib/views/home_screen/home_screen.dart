@@ -158,7 +158,7 @@ class HomeScreen extends StatelessWidget {
 
   Container featuredCategoriesList() {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      margin: const EdgeInsets.only(top: 10.0),
       padding: const EdgeInsets.all(12.0),
       color: lightGrey,
       width: double.infinity,
@@ -187,6 +187,7 @@ class HomeScreen extends StatelessWidget {
                     featureButton(
                         img: featuredListImg2[index],
                         title: featuredListTitles2[index]),
+                    10.heightBox,
                   ],
                 ),
               ),
