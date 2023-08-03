@@ -57,9 +57,11 @@ class Home extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: Column(children: <Widget>[
-        Obx(() => Expanded(child: navBody[controller.currentNavIndex.value])),
-      ]),
+      body: Column(
+        children: <Widget>[
+          Obx(() => Expanded(child: navBody[controller.currentNavIndex.value])),
+        ],
+      ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: controller.currentNavIndex.value,
@@ -67,7 +69,7 @@ class Home extends StatelessWidget {
           selectedLabelStyle: const TextStyle(fontFamily: bold),
           items: navItems,
           selectedItemColor: whiteColor,
-          unselectedItemColor: lightGrey,
+          unselectedItemColor: const Color.fromARGB(130, 255, 255, 255),
           backgroundColor: mehroonColor,
           type: BottomNavigationBarType.fixed,
         ),

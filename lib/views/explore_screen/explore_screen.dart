@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/home_controller/home_controller.dart';
+import 'package:impulse/views/explore_screen/category_details.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -26,8 +27,7 @@ class ExploreScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back, color: whiteColor),
               onPressed: goToHome,
             ),
-            title:
-                "Explorer".text.color(whiteColor).fontFamily(semibold).make(),
+            title: "Explore".text.color(whiteColor).fontFamily(semibold).make(),
           ),
           body: Container(
             padding: const EdgeInsets.all(10),
@@ -58,11 +58,16 @@ class ExploreScreen extends StatelessWidget {
               )
                   .box
                   .white
-                  .rounded
+                  .roundedSM
                   .padding(const EdgeInsets.all(6))
                   .outerShadowSm
                   .clip(Clip.antiAlias)
-                  .make(),
+                  .make()
+                  .onTap(
+                    () => Get.to(
+                      () => CategoryDetails(title: categoriesList[index]),
+                    ),
+                  ),
             ),
           ),
         ),

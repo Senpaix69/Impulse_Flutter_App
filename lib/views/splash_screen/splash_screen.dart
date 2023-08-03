@@ -76,8 +76,15 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
           const Spacer(),
-          credits.text.color(whiteColor).size(16).fontFamily(bold).make(),
-          20.heightBox,
+          Opacity(
+            opacity: 0.3,
+            child: credits.text
+                .color(whiteColor)
+                .size(16)
+                .fontFamily(semibold)
+                .make(),
+          ),
+          30.heightBox,
         ],
       ),
     );

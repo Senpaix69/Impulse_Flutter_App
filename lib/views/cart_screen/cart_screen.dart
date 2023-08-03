@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:impulse/consts/consts.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -6,7 +6,8 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: lightGrey,
+      child: "Cart is Empty".text.makeCentered().box.makeCentered(),
     );
   }
 }

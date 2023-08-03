@@ -1,11 +1,11 @@
 import 'package:impulse/consts/consts.dart';
 
-Widget bgWidget({Widget? child}) {
+Widget bgWidget({Widget? child, String? background}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 5),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(imgBackground),
+        image: AssetImage(background ?? imgBackground),
         fit: BoxFit.fill,
       ),
     ),

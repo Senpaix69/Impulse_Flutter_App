@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:impulse/consts/consts.dart';
 
 class DealsScreen extends StatelessWidget {
   const DealsScreen({super.key});
@@ -6,7 +6,8 @@ class DealsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.purple,
+      color: lightGrey,
+      child: "Have not created yet".text.makeCentered().box.makeCentered(),
     );
   }
 }

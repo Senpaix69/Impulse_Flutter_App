@@ -1,5 +1,4 @@
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/consts/lists.dart';
 import 'package:impulse/views/home_screen/widgets/buttons_list.dart';
 import 'package:impulse/views/home_screen/widgets/custom_swiper.dart';
 import 'package:impulse/views/home_screen/widgets/feature_button.dart';
@@ -53,9 +52,9 @@ class HomeScreen extends StatelessWidget {
 
   Container allProductsLists() {
     return Container(
-      color: lightGrey,
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(10.0),
       width: double.infinity,
+      color: lightGrey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -93,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                     .size(16)
                     .make()
               ],
-            ).box.white.padding(const EdgeInsets.all(12.0)).rounded.make(),
+            ).box.white.padding(const EdgeInsets.all(12.0)).roundedSM.make(),
           ),
         ],
       ),
@@ -159,7 +158,7 @@ class HomeScreen extends StatelessWidget {
   Container featuredCategoriesList() {
     return Container(
       margin: const EdgeInsets.only(top: 10.0),
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(10.0),
       color: lightGrey,
       width: double.infinity,
       child: Column(

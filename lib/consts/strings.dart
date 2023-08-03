@@ -1,5 +1,3 @@
-import 'package:impulse/consts/consts.dart';
-
 const appname = "Impulse";
 const appversion = "Version 1.0.0";
 const credits = "Zai Systems";
@@ -30,26 +28,3 @@ const featuredProducts = "Featured Products";
 const allProducts = "All Products";
 
 // Explorer Screen constants
-const categoriesList = [
-  "Women Clothing",
-  "Men Clothing & Fashion",
-  "Computer and Accessories",
-  "Auto Mobile",
-  "Kids & Toys",
-  "Sports",
-  "Jewelery",
-  "Cellphone & Tab",
-  "Furniture",
-];
-
-const categoriesListImgs = [
-  imgFc1,
-  imgFc2,
-  imgFc3,
-  imgFc4,
-  imgFc5,
-  imgFc6,
-  imgFc7,
-  imgFc8,
-  imgFc9,
-];

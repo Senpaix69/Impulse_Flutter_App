@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/consts/lists.dart';
 import 'package:impulse/views/auth_screen/signup_screen.dart';
 import 'package:impulse/controllers/auth_controller/password_controller.dart';
 import 'package:impulse/views/home_screen/home.dart';
