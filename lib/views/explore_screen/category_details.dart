@@ -14,7 +14,7 @@ class CategoryDetails extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: title.text
-              .fontFamily(bold)
+              .fontFamily(semibold)
               .white
               .overflow(TextOverflow.ellipsis)
               .make(),

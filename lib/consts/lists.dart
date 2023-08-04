@@ -1,3 +1,4 @@
+import 'package:impulse/consts/colors.dart';
 import 'package:impulse/consts/images.dart';
 
 const socialIconList = [
@@ -104,4 +105,10 @@ const itemsBtnList = [
   "Privacy Policy",
   "Return Policy",
   "Support Policy",
+];
+
+const colorsList = [
+  darkFontGrey,
+  golden,
+  mehroonColor,
 ];

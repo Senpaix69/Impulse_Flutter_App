@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/views/explore_screen/widgets/action_button.dart';
+import 'package:impulse/views/explore_screen/widgets/color_quantity.dart';
 import 'package:impulse/views/explore_screen/widgets/items_swiper.dart';
 import 'package:impulse/widget_common/custom_button.dart';
 import 'package:impulse/widget_common/products_list.dart';
@@ -24,9 +25,9 @@ class ItemDetails extends StatelessWidget {
                 children: <Widget>[
                   const CustomSwiper(sliderList: itemDetailsImg),
                   10.heightBox,
-                  itemTitleAndRating().box.white.shadowSm.p16.make(),
+                  itemTitleAndRating().box.white.outerShadow.p16.make(),
                   saleType().box.p12.color(lightGrey).make(),
-                  colorAndQuantity(context).box.shadowSm.py16.white.make(),
+                  const ColorAndQuantity(),
                   20.heightBox,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +41,7 @@ class ItemDetails extends StatelessWidget {
                       .padding(const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 16))
                       .white
-                      .shadowSm
+                      .outerShadow
                       .make(),
                   itemButtons().box.p12.make(),
                   10.heightBox,
@@ -51,7 +52,7 @@ class ItemDetails extends StatelessWidget {
                   ),
                   40.heightBox,
                 ],
-              ).box.shadowSm.p4.white.make(),
+              ).box.p4.white.make(),
             ),
             bottomActions(),
           ],
@@ -75,65 +76,6 @@ class ItemDetails extends StatelessWidget {
           ],
         ).box.py12.make(),
       ),
-    );
-  }
-
-  Column colorAndQuantity(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            "Color".text.color(darkFontGrey).make().marginOnly(left: 10),
-            (context.screenWidth / 5).widthBox,
-            Row(
-              children: List.generate(
-                3,
-                (index) => VxBox()
-                    .size(35, 35)
-                    .color(Vx.randomPrimaryColor)
-                    .margin(
-                      const EdgeInsets.symmetric(horizontal: 6.0),
-                    )
-                    .roundedFull
-                    .make(),
-              ),
-            ),
-          ],
-        ),
-        10.heightBox,
-        Row(
-          children: <Widget>[
-            "Quantity".text.color(darkFontGrey).make().marginOnly(left: 10),
-            (context.screenWidth / 8).widthBox,
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.remove,
-                color: Colors.black,
-              ),
-            ),
-            10.widthBox,
-            "0".text.size(16).color(darkFontGrey).make(),
-            10.widthBox,
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-            ),
-            "50 Available".text.color(darkFontGrey).make(),
-          ],
-        ),
-        10.heightBox,
-        Row(
-          children: <Widget>[
-            "Total Amount".text.color(darkFontGrey).make().marginOnly(left: 10),
-            (context.screenWidth / 11).widthBox,
-            "\$0.00".text.size(16).fontFamily(bold).color(mehroonColor).make(),
-          ],
-        ).box.color(lightGolden).py12.make(),
-      ],
     );
   }
 
@@ -205,6 +147,7 @@ class ItemDetails extends StatelessWidget {
               title: "Add to cart",
               textColor: whiteColor,
               btnColor: mehroonColor,
+              padding: (10, 12),
             ),
           ),
           const SizedBox(width: 10),
@@ -214,6 +157,7 @@ class ItemDetails extends StatelessWidget {
               title: "Buy now",
               textColor: mehroonColor,
               btnColor: lightGolden,
+              padding: (10, 12),
             ),
           ),
         ],

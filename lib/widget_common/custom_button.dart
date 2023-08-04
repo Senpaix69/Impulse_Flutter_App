@@ -5,11 +5,15 @@ Widget customButton({
   required String title,
   required Color textColor,
   required Color btnColor,
+  (double px, double py) padding = (10.0, 10.0),
 }) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
       backgroundColor: btnColor,
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(
+        horizontal: padding.$1,
+        vertical: padding.$2,
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
