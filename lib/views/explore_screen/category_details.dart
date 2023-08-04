@@ -1,4 +1,6 @@
+import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/views/explore_screen/item_details.dart';
 import 'package:impulse/views/explore_screen/widgets/subcategories_list.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
@@ -43,7 +45,7 @@ class CategoryDetails extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                       const Spacer(),
-                      "Laptop 4GB/64GB"
+                      "Luxary Bags"
                           .text
                           .fontFamily(semibold)
                           .color(darkFontGrey)
@@ -61,7 +63,10 @@ class CategoryDetails extends StatelessWidget {
                       .white
                       .padding(const EdgeInsets.all(12.0))
                       .roundedSM
-                      .make(),
+                      .make()
+                      .onTap(() => Get.to(() => const ItemDetails(
+                            title: "Iphone 13 Pro, 4/128",
+                          ))),
                 ),
               ),
             ],

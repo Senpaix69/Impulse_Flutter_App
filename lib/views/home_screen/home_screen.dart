@@ -4,6 +4,7 @@ import 'package:impulse/views/home_screen/widgets/custom_swiper.dart';
 import 'package:impulse/views/home_screen/widgets/feature_button.dart';
 import 'package:impulse/views/home_screen/widgets/search_container.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
+import 'package:impulse/widget_common/products_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,7 +20,11 @@ class HomeScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  customSwiper(sliderList: sliderList),
+                  const CustomSwiper(
+                    sliderList: sliderList,
+                    sliderNo: 0,
+                    duration: 3,
+                  ),
                   10.heightBox,
                   buttonsList(
                     height: context.screenHeight,
@@ -27,7 +32,11 @@ class HomeScreen extends StatelessWidget {
                     icons: [icTodaysDeal, icFlashDeal],
                   ),
                   10.heightBox,
-                  customSwiper(sliderList: sliderList2),
+                  const CustomSwiper(
+                    sliderList: sliderList2,
+                    sliderNo: 1,
+                    duration: 5,
+                  ),
                   10.heightBox,
                   buttonsList(
                     height: context.screenHeight,
@@ -36,9 +45,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                   10.heightBox,
                   featuredCategoriesList(),
-                  featuredProductsList(),
+                  productLists(title: featuredProducts),
                   10.heightBox,
-                  customSwiper(sliderList: sliderList2),
+                  const CustomSwiper(
+                    sliderList: sliderList2,
+                    sliderNo: 2,
+                    duration: 3,
+                  ),
                   10.heightBox,
                   allProductsLists(),
                 ],
@@ -93,62 +106,6 @@ class HomeScreen extends StatelessWidget {
                     .make()
               ],
             ).box.white.padding(const EdgeInsets.all(12.0)).roundedSM.make(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container featuredProductsList() {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      color: mehroonColor,
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          featuredProducts.text
-              .size(16)
-              .color(whiteColor)
-              .fontFamily(bold)
-              .make(),
-          10.heightBox,
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(
-                6,
-                (index) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Image.asset(
-                      imgP1,
-                      width: 150,
-                      fit: BoxFit.cover,
-                    ),
-                    5.heightBox,
-                    "Laptop 4GB/64GB"
-                        .text
-                        .fontFamily(semibold)
-                        .color(darkFontGrey)
-                        .make(),
-                    5.heightBox,
-                    "\$600"
-                        .text
-                        .color(mehroonColor)
-                        .fontFamily(bold)
-                        .size(16)
-                        .make()
-                  ],
-                )
-                    .box
-                    .white
-                    .padding(const EdgeInsets.all(10.0))
-                    .margin(const EdgeInsets.only(right: 8.0))
-                    .rounded
-                    .make(),
-              ),
-            ),
           ),
         ],
       ),

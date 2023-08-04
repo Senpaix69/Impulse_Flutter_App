@@ -5,14 +5,10 @@ import 'package:impulse/widget_common/dot_indicator.dart';
 
 class CustomSwiper extends StatelessWidget {
   final List<String> sliderList;
-  final int sliderNo;
-  final int duration;
 
   const CustomSwiper({
     super.key,
     required this.sliderList,
-    required this.sliderNo,
-    required this.duration,
   });
 
   @override
@@ -25,12 +21,10 @@ class CustomSwiper extends StatelessWidget {
         VxSwiper.builder(
           viewportFraction: 1.0,
           autoPlayAnimationDuration: const Duration(milliseconds: 500),
-          autoPlayInterval: Duration(seconds: duration),
           autoPlay: true,
-          height: 140,
+          height: 300,
           enlargeCenterPage: true,
-          onPageChanged: (index) =>
-              controller.sliderIndices[sliderNo].value = index,
+          onPageChanged: (index) => controller.itemDetails.value = index,
           itemCount: sliderList.length,
           itemBuilder: (context, index) => Image.asset(
             sliderList[index],
@@ -44,7 +38,7 @@ class CustomSwiper extends StatelessWidget {
         ),
         Obx(
           () => DotIndicator(
-            currentIndex: controller.sliderIndices[sliderNo].value,
+            currentIndex: controller.itemDetails.value,
             itemCount: sliderList.length,
             activeColor: mehroonColor,
           ).positioned(

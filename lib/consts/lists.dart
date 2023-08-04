@@ -88,3 +88,20 @@ const listTilesIcons = [
   icRefund,
   icMessages,
 ];
+
+// itemsDetails List
+const itemDetailsImg = [
+  imgPi1,
+  imgPi2,
+  imgPi3,
+  imgPi4,
+  imgPi5,
+];
+
+const itemsBtnList = [
+  "Video",
+  "Reviews",
+  "Privacy Policy",
+  "Return Policy",
+  "Support Policy",
+];

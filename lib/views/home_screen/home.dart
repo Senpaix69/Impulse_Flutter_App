@@ -57,6 +57,7 @@ class Home extends StatelessWidget {
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
           Obx(() => Expanded(child: navBody[controller.currentNavIndex.value])),

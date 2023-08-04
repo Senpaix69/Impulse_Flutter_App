@@ -28,3 +28,7 @@ const featuredProducts = "Featured Products";
 const allProducts = "All Products";
 
 // Explorer Screen constants
+const description = "Description";
+const descriptionList =
+    "1- Good Quality\n2- Better Performance\n3-Yo Funny Singh";
+const sugProd = "Products you may also like";
