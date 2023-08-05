@@ -147,7 +147,7 @@ class ItemDetails extends StatelessWidget {
               title: "Add to cart",
               textColor: whiteColor,
               btnColor: mehroonColor,
-              padding: (10, 12),
+              padding: (10, 16),
             ),
           ),
           const SizedBox(width: 10),
@@ -157,11 +157,11 @@ class ItemDetails extends StatelessWidget {
               title: "Buy now",
               textColor: mehroonColor,
               btnColor: lightGolden,
-              padding: (10, 12),
+              padding: (10, 16),
             ),
           ),
         ],
-      ).box.white.make(),
+      ).box.padding(const EdgeInsets.only(bottom: 10)).white.make(),
     );
   }
 }
