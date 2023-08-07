@@ -1,19 +1,24 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const MONGOOSE_API =
+  "mongodb+srv://senpai:Senpai%401122@cluster0.eteyoyt.mongodb.net/test?retryWrites=true&w=majority";
 
-// router
+// Import routes
 const authRouter = require("./router/auth");
 
-// middlewares
+// Middleware
+app.use(express.json());
 app.use(authRouter);
 
-// mongoose connection
+// Connect to MongoDB using Mongoose
 mongoose
   .connect(MONGOOSE_API)
-  .then(() => console.log("mongoos connected successfuly"))
-  .catch((e) => console.log(e));
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((error) => console.error("MongoDB connection error:", error));
 
-// app listening
-app.listen(PORT, () => console.log(`connect at post ${PORT} successfully.`));
+// Start the server
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server is running on port ${PORT}`)
+);

@@ -22,6 +22,12 @@ Widget customTextField({
           onPress: onPress,
           hintText: hintText,
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please enter $hintText";
+          }
+          return null;
+        },
       ),
     ],
   );

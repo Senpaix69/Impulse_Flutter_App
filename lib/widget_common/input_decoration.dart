@@ -15,6 +15,7 @@ InputDecoration inputDecoration({
       fontFamily: semibold,
       color: fontGrey,
     ),
+    errorStyle: const TextStyle(color: mehroonColor),
     hintText: hintText,
     isDense: true,
     fillColor: lightGrey,

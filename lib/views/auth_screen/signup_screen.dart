@@ -1,17 +1,105 @@
-import 'package:get/get.dart';
+import 'dart:convert' show jsonDecode;
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/auth_controller/password_controller.dart';
+import 'package:impulse/services/auth_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 import 'package:impulse/widget_common/custom_button.dart';
 import 'package:impulse/widget_common/custom_textfield.dart';
+import 'package:impulse/widget_common/dialog_boxs.dart';
+import 'package:impulse/widget_common/loading/loading_screen.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  late final _nameController = TextEditingController();
+  late final _emailController = TextEditingController();
+  late final _passwordController = TextEditingController();
+  late final _repasswordController = TextEditingController();
+  final loader = LoadingScreen.instance();
+  bool checkbox = false;
+  bool passVis = false;
+  bool repassVis = false;
+
+  final authService = AuthService();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _repasswordController.dispose();
+    super.dispose();
+  }
+
+  void showSnack({required String message}) => showSnackbar(
+        context: context,
+        message: message,
+      );
+
+  void showError({required String message, required String title}) =>
+      errorDialogue(
+        context: context,
+        message: message,
+        title: title,
+      );
+
+  void signUpUser() async {
+    if (_formKey.currentState!.validate()) {
+      if (_passwordController.text.length < 6) {
+        showError(
+          message: "Required password of lenght 6 character at least",
+          title: "Poor Password",
+        );
+        return;
+      }
+      if (_passwordController.text != _repasswordController.text) {
+        showError(
+          message: "Password did not match",
+          title: "Confirm Password",
+        );
+        return;
+      }
+
+      if (checkbox) {
+        loader.show(
+          context: context,
+          text: "Please wait...",
+          title: "Signing-up",
+        );
+
+        Map<String, dynamic> result = await authService.signUpUser(
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _nameController.text,
+        );
+
+        loader.hide();
+        if (result['status'] == 200) {
+          showSnack(message: "User registered successfully");
+          goBack();
+          return;
+        }
+        showError(
+            message: jsonDecode(result['body'])['msg'] ??
+                jsonDecode(result['body'])['error'] ??
+                "A server error occured",
+            title: "Error");
+        return;
+      }
+      showSnack(message: "Please agree to terms and conditions!");
+    }
+  }
+
+  void goBack() => Navigator.of(context).pop();
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(PasswordController());
     return bgWidget(
       child: SafeArea(
         child: Scaffold(
@@ -22,110 +110,118 @@ class SignupScreen extends StatelessWidget {
                   (context.screenHeight * 0.07).heightBox,
                   appLogoWidget(),
                   20.heightBox,
-                  Column(
-                    children: <Widget>[
-                      customTextField(hint: name, hintText: nameHint),
-                      10.heightBox,
-                      customTextField(hint: email, hintText: emailHint),
-                      10.heightBox,
-                      Obx(
-                        () => customTextField(
+                  Form(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        customTextField(
+                          controller: _nameController,
+                          hint: name,
+                          hintText: nameHint,
+                        ),
+                        10.heightBox,
+                        customTextField(
+                          controller: _emailController,
+                          hint: email,
+                          hintText: emailHint,
+                        ),
+                        10.heightBox,
+                        customTextField(
+                          controller: _passwordController,
                           hint: password,
-                          obsecure: !controller.password.value,
+                          obsecure: !passVis,
                           hintText: passwordHint,
-                          onPress: () => controller.password.value =
-                              !controller.password.value,
-                          suffixIcon: controller.password.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          onPress: () => setState(() => passVis = !passVis),
+                          suffixIcon:
+                              passVis ? Icons.visibility : Icons.visibility_off,
                         ),
-                      ),
-                      10.heightBox,
-                      Obx(
-                        () => customTextField(
+                        10.heightBox,
+                        customTextField(
+                          controller: _repasswordController,
                           hint: repassword,
-                          obsecure: !controller.repassword.value,
+                          obsecure: !repassVis,
                           hintText: passwordHint,
-                          onPress: () => controller.repassword.value =
-                              !controller.repassword.value,
-                          suffixIcon: controller.repassword.value
+                          onPress: () => setState(() => repassVis = !repassVis),
+                          suffixIcon: repassVis
                               ? Icons.visibility
                               : Icons.visibility_off,
                         ),
-                      ),
-                      5.heightBox,
-                      Row(
-                        children: <Widget>[
-                          Obx(
-                            () => Checkbox(
-                              value: controller.checkbox.value,
+                        5.heightBox,
+                        Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: checkbox,
                               onChanged: (value) {
-                                controller.checkbox.value = value!;
+                                setState(() => checkbox = value!);
                               },
                               activeColor: mehroonColor,
                               checkColor: whiteColor,
                             ),
-                          ),
-                          10.widthBox,
-                          Expanded(
-                            child: RichText(
-                                text: const TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "I agree to the ",
-                                  style: TextStyle(
-                                      fontFamily: regular, color: fontGrey),
-                                ),
-                                TextSpan(
-                                  text: termsAndConditions,
-                                  style: TextStyle(
-                                      fontFamily: regular, color: mehroonColor),
-                                ),
-                                TextSpan(
-                                  text: " & ",
-                                  style: TextStyle(
-                                      fontFamily: regular, color: fontGrey),
-                                ),
-                                TextSpan(
-                                  text: privacyPolicy,
-                                  style: TextStyle(
-                                      fontFamily: regular, color: mehroonColor),
-                                ),
-                              ],
-                            )),
-                          ),
-                        ],
-                      ),
-                      customButton(
-                        onPress: () {},
-                        title: signup,
-                        btnColor: mehroonColor,
-                        textColor: whiteColor,
-                      ).box.width(context.screenWidth - 50).make(),
-                      10.heightBox,
-                      RichText(
-                          text: const TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: alreadyHaveAcc,
-                            style: TextStyle(fontFamily: bold, color: fontGrey),
-                          ),
-                          TextSpan(
-                            text: "? Login",
-                            style: TextStyle(
-                                fontFamily: bold, color: mehroonColor),
-                          ),
-                        ],
-                      )).onTap(() => Get.back()),
-                    ],
-                  )
-                      .box
-                      .color(whiteColor)
-                      .rounded
-                      .padding(const EdgeInsets.all(16))
-                      .width(context.screenWidth - 50)
-                      .shadowSm
-                      .make(),
+                            10.widthBox,
+                            Expanded(
+                              child: RichText(
+                                  text: const TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: "I agree to the ",
+                                    style: TextStyle(
+                                        fontFamily: regular, color: fontGrey),
+                                  ),
+                                  TextSpan(
+                                    text: termsAndConditions,
+                                    style: TextStyle(
+                                        fontFamily: regular,
+                                        color: mehroonColor),
+                                  ),
+                                  TextSpan(
+                                    text: " & ",
+                                    style: TextStyle(
+                                        fontFamily: regular, color: fontGrey),
+                                  ),
+                                  TextSpan(
+                                    text: privacyPolicy,
+                                    style: TextStyle(
+                                        fontFamily: regular,
+                                        color: mehroonColor),
+                                  ),
+                                ],
+                              )),
+                            ),
+                          ],
+                        ),
+                        customButton(
+                          onPress: signUpUser,
+                          title: signup,
+                          btnColor: mehroonColor,
+                          textColor: whiteColor,
+                        ).box.width(context.screenWidth - 50).make(),
+                        10.heightBox,
+                        RichText(
+                            text: const TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: alreadyHaveAcc,
+                              style:
+                                  TextStyle(fontFamily: bold, color: fontGrey),
+                            ),
+                            TextSpan(
+                              text: "? Login",
+                              style: TextStyle(
+                                  fontFamily: bold, color: mehroonColor),
+                            ),
+                          ],
+                        )).onTap(goBack),
+                      ],
+                    )
+                        .box
+                        .color(whiteColor)
+                        .rounded
+                        .padding(const EdgeInsets.all(16))
+                        .width(context.screenWidth - 50)
+                        .shadowSm
+                        .make(),
+                  ),
                 ],
               ),
             ),
