@@ -3,7 +3,7 @@ import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/home_controller/home_controller.dart';
 import 'package:impulse/views/profile_screen/widgets/profile_button.dart';
 import 'package:impulse/views/profile_screen/widgets/profile_button2.dart';
-import 'package:impulse/widget_common/applogo_widget.dart';
+import 'package:impulse/views/profile_screen/widgets/user_details.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                profileTop(),
+                const UserDetails(),
                 20.heightBox,
                 Expanded(
                   child: SingleChildScrollView(
@@ -106,44 +106,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-      ],
-    );
-  }
-
-  Row profileTop() {
-    return Row(
-      children: <Widget>[
-        // Image.asset(
-        //   imgProfile,
-        //   width: 80,
-        //   fit: BoxFit.cover,
-        // ).box.roundedFull.make(),
-        appLogoWidget()
-            .box
-            .size(50, 50)
-            .roundedFull
-            .clip(Clip.antiAlias)
-            .make(),
-        10.widthBox,
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              "Dummy User".text.white.fontFamily(bold).make(),
-              "dummy@gmail.com".text.size(10).white.make(),
-            ],
-          ),
-        ),
-        OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: whiteColor),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          child: "Login".text.white.make(),
-        )
       ],
     );
   }

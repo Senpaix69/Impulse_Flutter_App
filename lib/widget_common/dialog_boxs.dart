@@ -1,4 +1,5 @@
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/widget_common/applogo_widget.dart';
 
 Future<void> errorDialogue({
   required BuildContext context,
@@ -10,8 +11,10 @@ Future<void> errorDialogue({
     builder: (context) {
       return AlertDialog(
         surfaceTintColor: lightGrey,
+        icon: appLogoWidget(),
         title: Text(
           title,
+          textAlign: TextAlign.left,
           style: const TextStyle(
             color: mehroonColor,
             fontFamily: bold,
@@ -28,18 +31,24 @@ Future<void> errorDialogue({
           ),
         ),
         actions: <Widget>[
-          TextButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: mehroonDark,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mehroonDark,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
               ),
-            ),
-            child: const Text(
-              'OK',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () => Navigator.of(context).pop(false),
+            ],
           ),
         ],
       );
@@ -56,33 +65,63 @@ Future<bool> confirmDialogue({
       context: context,
       builder: (context) {
         return AlertDialog(
+          icon: appLogoWidget(),
+          surfaceTintColor: lightGrey,
+          title: Text(
+            title,
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: mehroonColor,
+              fontFamily: bold,
+              fontSize: 20,
+            ),
+          ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          backgroundColor: Theme.of(context).primaryColor,
-          content: Text(message),
-          title: Text(title),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(
-                "Cancel",
-                style: TextStyle(
-                  color: Theme.of(context).shadowColor,
-                ),
-              ),
+          backgroundColor: lightGrey,
+          content: Text(
+            message,
+            style: const TextStyle(
+              color: darkFontGrey,
             ),
-            TextButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColorDark,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          ),
+          actions: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: lightGolden,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: mehroonColor),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Confirm',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () => Navigator.of(context).pop(true),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: TextButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mehroonDark,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ),
+              ],
             ),
           ],
         );

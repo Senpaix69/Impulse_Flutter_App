@@ -23,7 +23,7 @@ class AuthService {
         body: jsonEncode(user.toJson()),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(
-        const Duration(seconds: 3),
+        const Duration(seconds: 5),
       );
 
       return {'status': response.statusCode, 'body': response.body};
@@ -42,7 +42,7 @@ class AuthService {
         body: jsonEncode({"email": email, "password": password}),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(
-        const Duration(seconds: 3),
+        const Duration(seconds: 5),
       );
 
       return {'status': response.statusCode, 'body': response.body};

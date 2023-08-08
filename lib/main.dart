@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/views/splash_screen/splash_screen.dart';
+import 'package:impulse/controllers/route_controller/app_routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         fontFamily: regular,
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      initialRoute: AppRoutes.splashScreen,
+      getPages: AppRoutes.routes,
     );
   }
 }

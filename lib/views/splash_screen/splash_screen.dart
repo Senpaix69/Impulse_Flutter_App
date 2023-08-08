@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/views/auth_screen/login_screen.dart';
+import 'package:impulse/controllers/route_controller/app_routes.dart';
+import 'package:impulse/controllers/user_controller/user_controller.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,12 +14,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
+  final userController = Get.put(UserController(), permanent: true);
   late final Animation<Offset> _textAnimation;
 
   void changeScreen() {
     Future.delayed(
       const Duration(seconds: 3),
-      () => Get.off(() => const LoginScreen()),
+      () async => await Get.offNamed(AppRoutes.home),
     );
   }
 

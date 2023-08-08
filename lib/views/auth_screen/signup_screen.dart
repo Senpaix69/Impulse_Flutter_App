@@ -17,10 +17,10 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  late final _nameController = TextEditingController();
-  late final _emailController = TextEditingController();
-  late final _passwordController = TextEditingController();
-  late final _repasswordController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _repasswordController = TextEditingController();
   final loader = LoadingScreen.instance();
   bool checkbox = false;
   bool passVis = false;

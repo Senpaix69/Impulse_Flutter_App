@@ -44,6 +44,26 @@ class User {
     };
   }
 
+  User copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? password,
+    String? address,
+    String? type,
+    String? token,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      address: address ?? this.address,
+      type: type ?? this.type,
+      token: token ?? this.token,
+    );
+  }
+
   @override
   String toString() {
     return 'User(id: $id, name: $name, email: $email, password: $password, address: $address, type: $type, token: $token)';
