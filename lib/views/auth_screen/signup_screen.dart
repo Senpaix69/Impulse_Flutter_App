@@ -73,24 +73,29 @@ class _SignupScreenState extends State<SignupScreen> {
           title: "Signing-up",
         );
 
-        Map<String, dynamic> result = await authService.signUpUser(
-          email: _emailController.text,
-          password: _passwordController.text,
-          name: _nameController.text,
-        );
+        try {
+          Map<String, dynamic> result = await authService.signUpUser(
+            email: _emailController.text,
+            password: _passwordController.text,
+            name: _nameController.text,
+          );
 
-        loader.hide();
-        if (result['status'] == 200) {
-          showSnack(message: "User registered successfully");
-          goBack();
+          loader.hide();
+          if (result['status'] == 200) {
+            showSnack(message: "User registered successfully");
+            goBack();
+            return;
+          }
+          showError(
+              message: jsonDecode(result['body'])['msg'] ??
+                  jsonDecode(result['body'])['error'] ??
+                  jsonDecode(result['body']) ??
+                  "A server error occured",
+              title: "Error");
           return;
+        } catch (e) {
+          showError(message: e.toString(), title: "Error");
         }
-        showError(
-            message: jsonDecode(result['body'])['msg'] ??
-                jsonDecode(result['body'])['error'] ??
-                "A server error occured",
-            title: "Error");
-        return;
       }
       showSnack(message: "Please agree to terms and conditions!");
     }

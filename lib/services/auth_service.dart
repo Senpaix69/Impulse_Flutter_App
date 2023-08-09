@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 class AuthService {
   AuthService._privateConstructor();
+  static const _ip = "192.168.100.18";
 
   static final AuthService _instance = AuthService._privateConstructor();
 
@@ -20,9 +21,7 @@ class AuthService {
         Uri.parse(url),
         body: jsonEncode(body),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      ).timeout(
-        const Duration(seconds: 5),
-      );
+      ).timeout(const Duration(seconds: 5));
 
       return {'status': response.statusCode, 'body': response.body};
     } catch (e) {
@@ -45,7 +44,7 @@ class AuthService {
       token: '',
     );
     final response = await _sendRequest(
-      'http://192.168.100.18:3000/api/signup',
+      'http://$_ip:3000/api/signup',
       user.toJson(),
     );
 
@@ -57,7 +56,7 @@ class AuthService {
     required String password,
   }) async {
     final response = await _sendRequest(
-      'http://192.168.100.18:3000/api/signin',
+      'http://$_ip:3000/api/signin',
       {"email": email, "password": password},
     );
 
@@ -80,7 +79,7 @@ class AuthService {
 
   Future<Map<String, dynamic>> updateUser({required User user}) async {
     final response = await _sendRequest(
-      'http://192.168.100.18:3000/api/updateUser',
+      'http://$_ip:3000/api/updateUser',
       user.toJson(),
     );
 

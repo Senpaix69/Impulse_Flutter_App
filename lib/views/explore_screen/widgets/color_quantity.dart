@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/item_controller/item_controller.dart';
+import 'package:impulse/controllers/item_controller.dart';
 
 enum QuantityActions {
   add,

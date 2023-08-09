@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/user_controller/user_controller.dart';
+import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/models/user.dart';
 import 'package:impulse/views/auth_screen/login_screen.dart';
 import 'package:impulse/widget_common/dialog_boxs.dart';

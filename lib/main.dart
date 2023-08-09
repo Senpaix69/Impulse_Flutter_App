@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/route_controller/app_routes.dart';
+import 'package:impulse/controllers/app_routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,8 +1,8 @@
 import 'dart:convert' show jsonDecode;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/route_controller/app_routes.dart';
-import 'package:impulse/controllers/user_controller/user_controller.dart';
+import 'package:impulse/controllers/app_routes.dart';
+import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/services/auth_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
@@ -49,23 +49,28 @@ class _LoginScreenState extends State<LoginScreen> {
   void loginUser() async {
     if (_formKey.currentState!.validate()) {
       loader.show(context: context, text: "Please wait...", title: "Login-in");
-      final response = await authService.signInUser(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      loader.hide();
-      if (response['status'] == 200) {
-        final data = jsonDecode(response['body']);
-        await userController.setUser(data);
-        await Get.offNamed(AppRoutes.home);
-        return;
+      try {
+        final response = await authService.signInUser(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        loader.hide();
+        if (response['status'] == 200) {
+          final data = jsonDecode(response['body']);
+          await userController.setUser(data);
+          await Get.offNamed(AppRoutes.home);
+          return;
+        }
+        showError(
+          message: jsonDecode(response['body'])['msg'] ??
+              jsonDecode(response['body'])['error'] ??
+              jsonDecode(response['body']) ??
+              "An Error Occured",
+          title: "Error",
+        );
+      } catch (e) {
+        showError(message: e.toString(), title: "Error");
       }
-      showError(
-        message: jsonDecode(response['body'])['msg'] ??
-            jsonDecode(response['body'])['error'] ??
-            "An Error Occured",
-        title: "Error",
-      );
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/slider_controller/slider_controller.dart';
+import 'package:impulse/controllers/slider_controller.dart';
 import 'package:impulse/widget_common/dot_indicator.dart';
 
 class CustomSwiper extends StatelessWidget {

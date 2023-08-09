@@ -1,7 +1,7 @@
 import 'dart:convert' show jsonDecode;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/user_controller/user_controller.dart';
+import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/models/user.dart';
 import 'package:impulse/services/auth_service.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
@@ -66,21 +66,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         name: _nameController.text,
         address: _addressController.text,
       );
-      final response = await _authService.updateUser(user: _currUser);
-      unFocus();
-      loader.hide();
-      if (response['status'] == 200) {
-        final data = jsonDecode(response['body']);
-        await _userController.setUser(data);
-        setState(() => isEditing = false);
-        return;
+      try {
+        final response = await _authService.updateUser(user: _currUser);
+        unFocus();
+        loader.hide();
+        if (response['status'] == 200) {
+          final data = jsonDecode(response['body']);
+          await _userController.setUser(data);
+          setState(() => isEditing = false);
+          return;
+        }
+        showError(
+          message: jsonDecode(response['body'])['msg'] ??
+              jsonDecode(response['body'])['error'] ??
+              jsonDecode(response['body']) ??
+              "An Error Occured",
+          title: "Error",
+        );
+      } catch (e) {
+        showError(message: e.toString(), title: "Error");
       }
-      showError(
-        message: jsonDecode(response['body'])['msg'] ??
-            jsonDecode(response['body'])['error'] ??
-            "An Error Occured",
-        title: "Error",
-      );
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/home_controller/home_controller.dart';
+import 'package:impulse/controllers/home_controller.dart';
 import 'package:impulse/views/explore_screen/category_details.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
