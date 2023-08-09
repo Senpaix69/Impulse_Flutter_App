@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'dart:convert' show jsonDecode;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/route_controller/app_routes.dart';
 import 'package:impulse/controllers/user_controller/user_controller.dart';
-import 'package:impulse/models/user.dart';
 import 'package:impulse/services/auth_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
@@ -56,16 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       loader.hide();
       if (response['status'] == 200) {
-        final data = jsonDecode(response['body'])['msg'];
-        final user = User(
-            id: data['_id'],
-            name: data['name'],
-            email: data['email'],
-            password: data['password'],
-            address: data['password'],
-            type: data['type'],
-            token: "");
-        userController.setUser(user);
+        final data = jsonDecode(response['body']);
+        await userController.setUser(data);
         await Get.offNamed(AppRoutes.home);
         return;
       }

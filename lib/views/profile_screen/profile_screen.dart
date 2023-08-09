@@ -1,17 +1,22 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/home_controller/home_controller.dart';
+import 'package:impulse/controllers/route_controller/app_routes.dart';
+import 'package:impulse/controllers/user_controller/user_controller.dart';
 import 'package:impulse/views/profile_screen/widgets/profile_button.dart';
 import 'package:impulse/views/profile_screen/widgets/profile_button2.dart';
 import 'package:impulse/views/profile_screen/widgets/user_details.dart';
+import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
+import 'package:impulse/widget_common/custom_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
+    final controller = Get.find<HomeController>();
+    final userController = Get.find<UserController>();
 
     return WillPopScope(
       onWillPop: () async {
@@ -21,27 +26,45 @@ class ProfileScreen extends StatelessWidget {
       child: bgWidget(
         background: imgBackgroundHalf,
         child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const UserDetails(),
-                20.heightBox,
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
+          child: Obx(
+            () => Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10.0),
+              child: userController.isLoggedIn
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        profileButtons(),
+                        const UserDetails(),
                         20.heightBox,
-                        profileTiles(),
-                        20.heightBox,
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                profileButtons(),
+                                20.heightBox,
+                                profileTiles(),
+                                20.heightBox,
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
+                    )
+                  : Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          appLogoWidget(),
+                          10.heightBox,
+                          customButton(
+                            onPress: () => Get.toNamed(AppRoutes.loginScreen),
+                            title: "Please Sign-In",
+                            textColor: whiteColor,
+                            btnColor: mehroonDark,
+                          ).box.width(context.screenWidth * 0.5).make(),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
             ),
           ),
         ),
@@ -98,6 +121,7 @@ class ProfileScreen extends StatelessWidget {
             profileButton2(
               icon: Icons.mode_edit,
               title: "Edit Profile",
+              onTap: () async => await Get.toNamed(AppRoutes.editProfileScreen),
             ),
             10.widthBox,
             profileButton2(

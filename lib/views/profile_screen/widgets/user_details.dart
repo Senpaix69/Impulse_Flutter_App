@@ -3,7 +3,6 @@ import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/user_controller/user_controller.dart';
 import 'package:impulse/models/user.dart';
 import 'package:impulse/views/auth_screen/login_screen.dart';
-import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/dialog_boxs.dart';
 
 class UserDetails extends StatelessWidget {
@@ -11,7 +10,7 @@ class UserDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.put(UserController());
+    final userController = Get.find<UserController>();
     const dummyUser = User(
         id: "",
         name: name,
@@ -27,17 +26,18 @@ class UserDetails extends StatelessWidget {
         message: "Are you sure you want to logout?",
         title: "Logout",
       )) {
-        userController.setUser(null);
+        await userController.setUser(null);
       }
     }
 
     return Obx(
       () => Row(
         children: <Widget>[
-          appLogoWidget()
+          const Icon(Icons.person, size: 35, color: mehroonColor)
               .box
-              .size(50, 50)
+              .color(lightGolden)
               .roundedFull
+              .size(50, 50)
               .clip(Clip.antiAlias)
               .make(),
           const SizedBox(width: 10),
@@ -74,10 +74,7 @@ class UserDetails extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: (userController.isLoggedIn ? "Logout" : "Login")
-                  .text
-                  .white
-                  .make())
+              child: "Logout".text.white.make())
         ],
       ),
     );

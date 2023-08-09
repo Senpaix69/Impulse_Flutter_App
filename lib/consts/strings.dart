@@ -27,8 +27,16 @@ const featuredCategories = "Featured Categories";
 const featuredProducts = "Featured Products";
 const allProducts = "All Products";
 
+// Profile Screen Constants
+const yourDetails = 'Your Details';
+const editDescription =
+    "Here you can edit your personal details.When you are done, click save.";
+
 // Explorer Screen constants
 const description = "Description";
 const descriptionList =
     "1- Good Quality\n2- Better Performance\n3-Yo Funny Singh";
 const sugProd = "Products you may also like";
+
+// SharedPrefs constants
+const userKey = 'user';

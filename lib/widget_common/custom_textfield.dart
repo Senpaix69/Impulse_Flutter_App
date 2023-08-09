@@ -7,6 +7,8 @@ Widget customTextField({
   IconData? suffixIcon,
   bool obsecure = false,
   Function()? onPress,
+  Function(String)? onChange,
+  bool? enabled,
   TextEditingController? controller,
 }) {
   return Column(
@@ -15,6 +17,8 @@ Widget customTextField({
       hint.text.color(mehroonColor).fontFamily(semibold).size(16).make(),
       5.heightBox,
       TextFormField(
+        onChanged: onChange,
+        enabled: enabled,
         obscureText: obsecure,
         controller: controller,
         decoration: inputDecoration(

@@ -1,8 +1,11 @@
+import 'dart:convert' show jsonDecode;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/route_controller/app_routes.dart';
 import 'package:impulse/controllers/user_controller/user_controller.dart';
+import 'package:impulse/models/user.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +20,11 @@ class _SplashScreenState extends State<SplashScreen>
   final userController = Get.put(UserController(), permanent: true);
   late final Animation<Offset> _textAnimation;
 
-  void changeScreen() {
+  void changeScreen() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    final user = sp.getString(userKey);
+    await userController
+        .setUser(user != null ? User.fromJson(jsonDecode(user)) : null);
     Future.delayed(
       const Duration(seconds: 3),
       () async => await Get.offNamed(AppRoutes.home),
@@ -40,7 +47,6 @@ class _SplashScreenState extends State<SplashScreen>
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
-
     _animationController.forward(from: 0.0);
     changeScreen();
   }

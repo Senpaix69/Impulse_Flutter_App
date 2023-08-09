@@ -35,9 +35,9 @@ class Home extends StatelessWidget {
           ),
           label: "Deals"),
       const BottomNavigationBarItem(
-          icon: FaIcon(
-            FontAwesomeIcons.cartShopping,
-            size: 23,
+          icon: Icon(
+            Icons.shopping_cart,
+            size: 26,
           ),
           label: "Cart"),
       const BottomNavigationBarItem(

@@ -22,7 +22,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
@@ -66,7 +66,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, password: $password, address: $address, type: $type, token: $token)';
+    return '{id: $id, name: $name, email: $email, password: $password, address: $address, type: $type, token: $token}';
   }
 
   @override

@@ -9,7 +9,7 @@ class ExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(HomeController());
+    final controller = Get.find<HomeController>();
 
     void goToHome() {
       controller.currentNavIndex.value = 0;
