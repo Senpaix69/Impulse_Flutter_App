@@ -40,3 +40,7 @@ const sugProd = "Products you may also like";
 
 // SharedPrefs constants
 const userKey = 'user';
+
+// firebase constants
+const profileUrl = 'profilePic';
+const downloadProfileUrl = 'profilePicURL';

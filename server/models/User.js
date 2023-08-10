@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  phoneNo: {
+    type: String,
+    default: "+92xxxxxxxxx",
+  },
+  profileUrl: {
+    type: String,
+    default: "",
+  },
+  downloadableProfileUrl: {
+    type: String,
+    default: "",
+  },
   address: {
     type: String,
     default: "",

@@ -4,6 +4,7 @@ import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/app_routes.dart';
 import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/services/auth_service.dart';
+import 'package:impulse/services/firebase_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 import 'package:impulse/widget_common/custom_button.dart';
@@ -23,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final authService = AuthService();
-  final userController = Get.put(UserController());
+  final _userController = Get.put(UserController());
+  final _firebaseService = FirebaseService.instance();
   final loader = LoadingScreen.instance();
   bool passVis = false;
 
@@ -51,13 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
       loader.show(context: context, text: "Please wait...", title: "Login-in");
       try {
         final response = await authService.signInUser(
-          email: _emailController.text.trim(),
+          email: _emailController.text.toLowerCase().trim(),
           password: _passwordController.text.trim(),
         );
         loader.hide();
         if (response['status'] == 200) {
           final data = jsonDecode(response['body']);
-          await userController.setUser(data);
+          await _userController.setUser(data);
           await Get.offNamed(AppRoutes.home);
           return;
         }
@@ -71,6 +73,19 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         showError(message: e.toString(), title: "Error");
       }
+    }
+  }
+
+  void googleSignIn() async {
+    loader.show(context: context, text: "Please wait...", title: "Login-in");
+    try {
+      await _firebaseService.signInWithGoogle();
+      loader.hide();
+      showSnack(message: "Login-in successfully");
+      Get.offNamed(AppRoutes.home);
+    } catch (e) {
+      loader.hide();
+      showError(message: e.toString(), title: "Error");
     }
   }
 
@@ -139,20 +154,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       5.heightBox,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          3,
-                          (index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              backgroundColor: lightGrey,
-                              radius: 25,
-                              child: Image.asset(
-                                socialIconList[index],
-                                width: 30,
-                              ),
-                            ),
+                        children: <Widget>[
+                          socialButton(onClick: () {}, icon: socialIconList[0]),
+                          socialButton(
+                            onClick: googleSignIn,
+                            icon: socialIconList[1],
                           ),
-                        ),
+                          socialButton(onClick: () {}, icon: socialIconList[2]),
+                        ],
                       ),
                     ],
                   )
@@ -175,5 +184,19 @@ class _LoginScreenState extends State<LoginScreen> {
         }),
       ),
     );
+  }
+
+  Widget socialButton({Function()? onClick, required String icon}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        backgroundColor: lightGrey,
+        radius: 25,
+        child: Image.asset(
+          icon,
+          width: 30,
+        ),
+      ),
+    ).onTap(onClick);
   }
 }

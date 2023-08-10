@@ -29,26 +29,47 @@ class AuthService {
     }
   }
 
+  Map<String, dynamic> parseUserResponse(Map<String, dynamic> response) {
+    final data = jsonDecode(response['body']);
+    final userData = data['newUser'];
+    final user = User(
+      id: userData['_id'],
+      name: userData['name'],
+      email: userData['email'],
+      password: userData['password'],
+      address: userData['address'],
+      downloadableProfileUrl: userData['downloadableProfileUrl'],
+      profileUrl: userData['profileUrl'],
+      phone: userData['phoneNo'],
+      type: userData['type'],
+      token: data['token'],
+    );
+    return {'status': response['status'], 'body': jsonEncode(user)};
+  }
+
   Future<Map<String, dynamic>> signUpUser({
     required String name,
     required String email,
     required String password,
+    int method = 0, // 0 -> email-password
+    String phone = "",
+    String downloadableProfileUrl = "",
   }) async {
     final user = User(
       id: '',
       name: name,
       email: email,
       password: password,
-      address: '',
-      type: '',
-      token: '',
-    );
-    final response = await _sendRequest(
-      'http://$_ip:3000/api/signup',
-      user.toJson(),
+      phone: phone,
+      downloadableProfileUrl: downloadableProfileUrl,
     );
 
-    return response;
+    final response = await _sendRequest(
+      'http://$_ip:3000/api/signup',
+      {'user': user.toJson(), 'method': method},
+    );
+
+    return response['status'] == 200 ? parseUserResponse(response) : response;
   }
 
   Future<Map<String, dynamic>> signInUser({
@@ -60,21 +81,7 @@ class AuthService {
       {"email": email, "password": password},
     );
 
-    if (response['status'] == 200) {
-      final data = jsonDecode(response['body']);
-      final userData = data['existingUser'];
-      final user = User(
-        id: userData['_id'],
-        name: userData['name'],
-        email: userData['email'],
-        password: userData['password'],
-        address: userData['address'],
-        type: userData['type'],
-        token: data['token'],
-      );
-      return {'status': response['status'], 'body': jsonEncode(user)};
-    }
-    return response;
+    return response['status'] == 200 ? parseUserResponse(response) : response;
   }
 
   Future<Map<String, dynamic>> updateUser({required User user}) async {
@@ -83,20 +90,6 @@ class AuthService {
       user.toJson(),
     );
 
-    if (response['status'] == 200) {
-      final data = jsonDecode(response['body']);
-      final userData = data['user'];
-      final user = User(
-        id: userData['_id'],
-        name: userData['name'],
-        email: userData['email'],
-        password: userData['password'],
-        address: userData['address'],
-        type: userData['type'],
-        token: data['token'],
-      );
-      return {'status': response['status'], 'body': jsonEncode(user)};
-    }
-    return response;
+    return response['status'] == 200 ? parseUserResponse(response) : response;
   }
 }

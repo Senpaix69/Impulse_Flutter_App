@@ -1,9 +1,12 @@
+import 'dart:io' show File;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/models/user.dart';
+import 'package:impulse/services/firebase_service.dart';
 import 'package:impulse/views/auth_screen/login_screen.dart';
 import 'package:impulse/widget_common/dialog_boxs.dart';
+import 'package:impulse/widget_common/loading/loading_screen.dart';
 
 class UserDetails extends StatelessWidget {
   const UserDetails({super.key});
@@ -11,14 +14,30 @@ class UserDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
+    final loader = LoadingScreen.instance();
     const dummyUser = User(
-        id: "",
-        name: name,
-        email: emailHint,
-        password: "",
-        address: "",
-        type: "",
-        token: "");
+      id: "",
+      name: name,
+      email: emailHint,
+      password: "",
+    );
+
+    void showLoader({
+      required String message,
+      required String title,
+    }) =>
+        loader.show(
+          context: context,
+          text: "Please wait...",
+          title: "Login-out",
+        );
+
+    void showError({required String message, required String title}) =>
+        errorDialogue(
+          context: context,
+          message: message,
+          title: title,
+        );
 
     void logOut() async {
       if (await confirmDialogue(
@@ -26,20 +45,31 @@ class UserDetails extends StatelessWidget {
         message: "Are you sure you want to logout?",
         title: "Logout",
       )) {
-        await userController.setUser(null);
+        try {
+          showLoader(message: "Please wait...", title: "Loggin-out");
+          await FirebaseService.instance().logOut();
+          loader.hide();
+        } catch (e) {
+          loader.hide();
+          showError(message: e.toString(), title: "Error");
+        }
       }
+    }
+
+    Widget getProfile() {
+      return userController.isLoggedIn
+          ? userController.currentUser!.profileUrl.isNotEmpty
+              ? circularBox(
+                  widget:
+                      Image.file(File(userController.currentUser!.profileUrl)))
+              : circularBox(widget: dummyAvt())
+          : circularBox(widget: dummyAvt());
     }
 
     return Obx(
       () => Row(
         children: <Widget>[
-          const Icon(Icons.person, size: 35, color: mehroonColor)
-              .box
-              .color(lightGolden)
-              .roundedFull
-              .size(50, 50)
-              .clip(Clip.antiAlias)
-              .make(),
+          getProfile(),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -79,4 +109,13 @@ class UserDetails extends StatelessWidget {
       ),
     );
   }
+
+  Icon dummyAvt() => const Icon(Icons.person, size: 35, color: mehroonColor);
+
+  Widget circularBox({required Widget widget}) => widget.box
+      .color(lightGolden)
+      .roundedFull
+      .size(50, 50)
+      .clip(Clip.antiAlias)
+      .make();
 }

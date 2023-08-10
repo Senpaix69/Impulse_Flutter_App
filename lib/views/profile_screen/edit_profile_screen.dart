@@ -35,7 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _currUser = _userController.currentUser!;
     _nameController.text = _currUser.name;
     _emailController.text = _currUser.email;
-    _numberController.text = "+92xxxxxxxxxx";
+    _numberController.text = _currUser.phone;
     _addressController.text = _currUser.address;
   }
 
@@ -65,6 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _currUser = _currUser.copyWith(
         name: _nameController.text,
         address: _addressController.text,
+        phone: _numberController.text.trim(),
       );
       try {
         final response = await _authService.updateUser(user: _currUser);

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "266009987894",
+    "project_id": "impulse-dev-dd71b",
+    "storage_bucket": "impulse-dev-dd71b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266009987894:android:8f55a029475e376bbd8197",
+        "android_client_info": {
+          "package_name": "senpai.impulse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266009987894-lol54hhs529vbno1r4fmdeapera1ibab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKWt2-bscoYLY3dy4S7UMTUIX298uF05s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266009987894-00m7doudtb88jrq5u7kvknebl4r4vc5h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "266009987894-nvdmddf6pqtu8f0mqodj1kemt6eces1k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "senpai.impulse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
