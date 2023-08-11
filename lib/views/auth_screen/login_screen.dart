@@ -2,7 +2,6 @@ import 'dart:convert' show jsonDecode;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/app_routes.dart';
-import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/services/auth_service.dart';
 import 'package:impulse/services/firebase_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
@@ -24,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final authService = AuthService();
-  final _userController = Get.put(UserController());
   final _firebaseService = FirebaseService.instance();
   final loader = LoadingScreen.instance();
   bool passVis = false;
@@ -55,25 +53,20 @@ class _LoginScreenState extends State<LoginScreen> {
         final email = _emailController.text.toLowerCase().trim();
         final password = _passwordController.text;
 
-        await FirebaseService.instance()
+        final response = await FirebaseService.instance()
             .signInWithEmailPassword(email: email, password: password);
-        final response =
-            await authService.signInUser(email: email, password: password);
-
         loader.hide();
-        if (response['status'] == 200) {
-          final data = jsonDecode(response['body']);
-          await _userController.setUser(data);
-          await Get.offNamed(AppRoutes.home);
+        if (response['status'] != 200) {
+          showError(
+            message: jsonDecode(response['body'])['msg'] ??
+                jsonDecode(response['body'])['error'] ??
+                jsonDecode(response['body']) ??
+                "An Error Occured",
+            title: "Error",
+          );
           return;
         }
-        showError(
-          message: jsonDecode(response['body'])['msg'] ??
-              jsonDecode(response['body'])['error'] ??
-              jsonDecode(response['body']) ??
-              "An Error Occured",
-          title: "Error",
-        );
+        Get.offNamed(AppRoutes.home);
       } catch (e) {
         loader.hide();
         showError(message: e.toString(), title: "Error");
@@ -85,12 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
     loader.show(context: context, text: "Please wait...", title: "Login-in");
     try {
       await _firebaseService.signInWithGoogle();
-      loader.hide();
       showSnack(message: "Login-in successfully");
       Get.offNamed(AppRoutes.home);
     } catch (e) {
-      loader.hide();
       showError(message: e.toString(), title: "Error");
+    } finally {
+      loader.hide();
     }
   }
 

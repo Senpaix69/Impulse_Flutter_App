@@ -55,7 +55,7 @@ class FirebaseService {
     }
   }
 
-  Future<void> signInWithEmailPassword({
+  Future<Map<String, dynamic>> signInWithEmailPassword({
     required String email,
     required String password,
   }) async {
@@ -64,8 +64,21 @@ class FirebaseService {
         email: email,
         password: password,
       );
+
+      final response =
+          await _authService.signInUser(email: email, password: password);
+
+      if (response['status'] == 200) {
+        final data = jsonDecode(response['body']);
+        await _user.setUser(data);
+        if (!File(_user.currentUser!.profileUrl).existsSync() &&
+            _user.currentUser!.downloadableProfileUrl.isNotEmpty) {
+          await downloadProfileImage();
+        }
+      }
+      return response;
     } catch (e) {
-      throw Exception(e.toString());
+      return {"status": 400, "body": e.toString()};
     }
   }
 

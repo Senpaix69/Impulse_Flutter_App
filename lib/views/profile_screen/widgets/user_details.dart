@@ -60,14 +60,13 @@ class UserDetails extends StatelessWidget {
     Widget getProfile() {
       if (userController.isLoggedIn) {
         final profileUrl = userController.currentUser!.profileUrl;
-        final downloadableProfileUrl =
-            userController.currentUser!.downloadableProfileUrl;
         if (profileUrl.isNotEmpty && File(profileUrl).existsSync()) {
           return circularBox(
-            widget: Image.file(File(profileUrl)),
+            widget: Image.file(
+              File(profileUrl),
+              fit: BoxFit.cover,
+            ),
           );
-        } else if (downloadableProfileUrl.isNotEmpty) {
-          firebase.downloadProfileImage();
         }
       }
       return circularBox(widget: dummyAvt());
