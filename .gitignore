@@ -45,5 +45,6 @@ app.*.map.json
 
 # Server
 /server/node_modules
-*.env.local
+*env.dart
+*.env
 *.local.properties

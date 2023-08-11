@@ -1,16 +1,14 @@
 import 'dart:convert';
+import 'package:impulse/consts/env.dart';
 import 'package:impulse/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
   AuthService._privateConstructor();
-  static const _ip = "192.168.100.18";
 
   static final AuthService _instance = AuthService._privateConstructor();
 
-  factory AuthService() {
-    return _instance;
-  }
+  factory AuthService() => _instance;
 
   Future<Map<String, dynamic>> _sendRequest(
     String url,
@@ -18,10 +16,10 @@ class AuthService {
   ) async {
     try {
       final response = await http.post(
-        Uri.parse(url),
+        Uri.parse('$horokuAddr$url'),
         body: jsonEncode(body),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      ).timeout(const Duration(seconds: 5));
+      ).timeout(const Duration(seconds: 10));
 
       return {'status': response.statusCode, 'body': response.body};
     } catch (e) {
@@ -65,7 +63,7 @@ class AuthService {
     );
 
     final response = await _sendRequest(
-      'http://$_ip:3000/api/signup',
+      '/api/signup',
       {'user': user.toJson(), 'method': method},
     );
 
@@ -77,7 +75,7 @@ class AuthService {
     required String password,
   }) async {
     final response = await _sendRequest(
-      'http://$_ip:3000/api/signin',
+      '/api/signin',
       {"email": email, "password": password},
     );
 
@@ -86,7 +84,7 @@ class AuthService {
 
   Future<Map<String, dynamic>> updateUser({required User user}) async {
     final response = await _sendRequest(
-      'http://$_ip:3000/api/updateUser',
+      '/api/updateUser',
       user.toJson(),
     );
 
