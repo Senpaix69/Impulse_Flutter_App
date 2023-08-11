@@ -166,16 +166,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         : dummyIcon(),
                   ),
                   Positioned(
-                    bottom: -4,
-                    right: -4,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        size: 30,
-                        color: whiteColor,
-                      ),
-                      onPressed: pickProfile,
-                    ).box.outerShadowSm.make(),
+                    bottom: -2,
+                    right: -0,
+                    child: const Icon(
+                      Icons.camera_alt,
+                      size: 30,
+                      color: darkFontGrey,
+                    ).box.roundedFull.p4.white.make().onTap(
+                          pickProfile,
+                        ),
                   ),
                 ],
               ),
