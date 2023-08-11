@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGOOSE_API =
-  "mongodb+srv://senpai:Senpai%401122@cluster0.eteyoyt.mongodb.net/test?retryWrites=true&w=majority";
 
 // Import routes
 const authRouter = require("./router/auth");
@@ -14,7 +13,7 @@ app.use(authRouter);
 
 // Connect to MongoDB using Mongoose
 mongoose
-  .connect(MONGOOSE_API)
+  .connect(process.env.MONGOOSE_API)
   .then(() => console.log("MongoDB connected successfully"))
   .catch((error) => console.error("MongoDB connection error:", error));
 
