@@ -15,6 +15,7 @@ class UserDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final userController = Get.find<UserController>();
     final loader = LoadingScreen.instance();
+    final firebase = FirebaseService.instance();
     const dummyUser = User(
       id: "",
       name: name,
@@ -47,7 +48,7 @@ class UserDetails extends StatelessWidget {
       )) {
         try {
           showLoader(message: "Please wait...", title: "Loggin-out");
-          await FirebaseService.instance().logOut();
+          await firebase.logOut();
           loader.hide();
         } catch (e) {
           loader.hide();
@@ -57,13 +58,19 @@ class UserDetails extends StatelessWidget {
     }
 
     Widget getProfile() {
-      return userController.isLoggedIn
-          ? userController.currentUser!.profileUrl.isNotEmpty
-              ? circularBox(
-                  widget:
-                      Image.file(File(userController.currentUser!.profileUrl)))
-              : circularBox(widget: dummyAvt())
-          : circularBox(widget: dummyAvt());
+      if (userController.isLoggedIn) {
+        final profileUrl = userController.currentUser!.profileUrl;
+        final downloadableProfileUrl =
+            userController.currentUser!.downloadableProfileUrl;
+        if (profileUrl.isNotEmpty && File(profileUrl).existsSync()) {
+          return circularBox(
+            widget: Image.file(File(profileUrl)),
+          );
+        } else if (downloadableProfileUrl.isNotEmpty) {
+          firebase.downloadProfileImage();
+        }
+      }
+      return circularBox(widget: dummyAvt());
     }
 
     return Obx(

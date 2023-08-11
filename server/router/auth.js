@@ -78,8 +78,6 @@ authRouter.post("/api/updateUser", async (req, res) => {
       newUser.downloadableProfileUrl = downloadableProfileUrl;
     if (profileUrl) newUser.profileUrl = profileUrl;
 
-    console.log(newUser);
-
     await newUser.save();
     res.json({ token: generateToken(id), newUser });
   } catch (error) {
