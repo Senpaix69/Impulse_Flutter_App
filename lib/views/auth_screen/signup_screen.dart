@@ -1,6 +1,7 @@
 import 'dart:convert' show jsonDecode;
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/services/auth_service.dart';
+import 'package:impulse/services/firebase_service.dart';
 import 'package:impulse/widget_common/applogo_widget.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 import 'package:impulse/widget_common/custom_button.dart';
@@ -74,10 +75,18 @@ class _SignupScreenState extends State<SignupScreen> {
         );
 
         try {
+          final email = _emailController.text.toLowerCase().trim();
+          final name = _nameController.text;
+          final password = _passwordController.text;
+          await FirebaseService.instance().signUpWithEmailPassword(
+            name: name,
+            email: email,
+            password: password,
+          );
           Map<String, dynamic> result = await authService.signUpUser(
-            email: _emailController.text,
-            password: _passwordController.text,
-            name: _nameController.text,
+            email: email,
+            password: password,
+            name: name,
           );
 
           loader.hide();
@@ -94,6 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
               title: "Error");
           return;
         } catch (e) {
+          loader.hide();
           showError(message: e.toString(), title: "Error");
         }
       }

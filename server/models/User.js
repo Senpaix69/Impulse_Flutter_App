@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
       message: "Please enter a valid email",
     },
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
   password: {
     type: String,
     required: true,

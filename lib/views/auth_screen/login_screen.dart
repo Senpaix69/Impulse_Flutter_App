@@ -52,10 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       loader.show(context: context, text: "Please wait...", title: "Login-in");
       try {
-        final response = await authService.signInUser(
-          email: _emailController.text.toLowerCase().trim(),
-          password: _passwordController.text.trim(),
-        );
+        final email = _emailController.text.toLowerCase().trim();
+        final password = _passwordController.text;
+
+        await FirebaseService.instance()
+            .signInWithEmailPassword(email: email, password: password);
+        final response =
+            await authService.signInUser(email: email, password: password);
+
         loader.hide();
         if (response['status'] == 200) {
           final data = jsonDecode(response['body']);
@@ -71,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
           title: "Error",
         );
       } catch (e) {
+        loader.hide();
         showError(message: e.toString(), title: "Error");
       }
     }

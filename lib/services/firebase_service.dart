@@ -33,6 +33,42 @@ class FirebaseService {
 
   factory FirebaseService.instance() => _instance;
 
+  Future<void> signUpWithEmailPassword({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final UserCredential authResult =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (authResult.user != null) {
+        final user = authResult.user!;
+        await user.updateDisplayName(name);
+        await _auth.signOut();
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<void> signInWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -75,8 +111,7 @@ class FirebaseService {
         throw Exception("User not authenticated properly.");
       }
     } catch (e) {
-      throw Exception(
-          "An error occurred during Google sign-in: ${e.toString()}");
+      throw Exception(e.toString());
     }
   }
 
@@ -99,9 +134,7 @@ class FirebaseService {
       userId: _user.currentUser!.id,
       profilePicPath: profilePicPath,
     );
-    await _auth.currentUser!.updatePhotoURL(
-      profileData[downloadProfileUrl],
-    );
+
     await _user.setUser(_user.currentUser!.copyWith(
       profileUrl: profileData[profileUrl],
       downloadableProfileUrl: profileData[downloadProfileUrl],
@@ -131,8 +164,11 @@ class FirebaseService {
     try {
       final ref = _storage.ref('${_user.currentUser!.id}/$doc/');
       final result = await ref.listAll();
-      for (final childRef in result.items) {
-        await childRef.delete();
+
+      if (result.items.isNotEmpty) {
+        for (final childRef in result.items) {
+          await childRef.delete();
+        }
       }
     } catch (e) {
       throw Exception(e.toString());
@@ -147,7 +183,7 @@ class FirebaseService {
     final fileName = '${const Uuid().v4()}_${basename(file.path)}';
 
     final copyPath = await copyFile(filepath: profilePicPath);
-    deleteUserDocumentary(doc: "profile_pictures");
+    await deleteUserDocumentary(doc: "profile_pictures");
     final storageRef =
         _storage.ref().child('$userId/profile_pictures').child(fileName);
     final uploadTask = storageRef.putFile(file);

@@ -1,9 +1,12 @@
 import 'dart:convert' show jsonDecode;
+import 'dart:io' show File;
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/models/user.dart';
 import 'package:impulse/services/auth_service.dart';
+import 'package:impulse/services/firebase_service.dart';
+import 'package:impulse/utils/file_picker.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 import 'package:impulse/widget_common/custom_button.dart';
 import 'package:impulse/widget_common/custom_textfield.dart';
@@ -27,11 +30,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _authService = AuthService();
   final loader = LoadingScreen.instance();
   late User _currUser;
+  String _profileImage = "";
   bool isEditing = false;
 
   @override
   void initState() {
     super.initState();
+    _profileImage = _userController.currentUser!.profileUrl;
     _currUser = _userController.currentUser!;
     _nameController.text = _currUser.name;
     _emailController.text = _currUser.email;
@@ -56,37 +61,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
 
   void saveProfile() async {
-    if (_formKey.currentState!.validate()) {
-      loader.show(
-        context: context,
-        text: "Please wait...",
-        title: "Saving Changes",
-      );
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    loader.show(
+      context: context,
+      text: "Please wait...",
+      title: "Saving Changes",
+    );
+
+    try {
+      if (_profileImage != _currUser.profileUrl) {
+        await FirebaseService.instance()
+            .updateProfilePic(profilePicPath: _profileImage);
+      }
+
       _currUser = _currUser.copyWith(
         name: _nameController.text,
         address: _addressController.text,
         phone: _numberController.text.trim(),
+        profileUrl: _userController.currentUser!.profileUrl,
+        downloadableProfileUrl:
+            _userController.currentUser!.downloadableProfileUrl,
       );
-      try {
-        final response = await _authService.updateUser(user: _currUser);
-        unFocus();
-        loader.hide();
-        if (response['status'] == 200) {
-          final data = jsonDecode(response['body']);
-          await _userController.setUser(data);
-          setState(() => isEditing = false);
-          return;
-        }
-        showError(
-          message: jsonDecode(response['body'])['msg'] ??
-              jsonDecode(response['body'])['error'] ??
-              jsonDecode(response['body']) ??
-              "An Error Occured",
-          title: "Error",
-        );
-      } catch (e) {
-        showError(message: e.toString(), title: "Error");
+
+      final response = await _authService.updateUser(user: _currUser);
+      unFocus();
+      loader.hide();
+
+      if (response['status'] == 200) {
+        final data = jsonDecode(response['body']);
+        await _userController.setUser(data);
+        setState(() => isEditing = false);
+        return;
       }
+
+      showError(
+        title: "Error",
+        message: jsonDecode(response['body'])['msg'] ??
+            jsonDecode(response['body'])['error'] ??
+            jsonDecode(response['body']) ??
+            "An Error Occurred",
+      );
+    } catch (e) {
+      unFocus();
+      loader.hide();
+      showError(message: e.toString(), title: "Error");
     }
   }
 
@@ -102,6 +123,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void unFocus() {
     if (!FocusScope.of(context).hasPrimaryFocus) {
       FocusScope.of(context).unfocus();
+    }
+  }
+
+  void pickProfile() async {
+    try {
+      final List<String>? list = await pickImage(type: "image");
+      if (list != null) {
+        setState(() {
+          isEditing = true;
+          _profileImage = list.first;
+        });
+      }
+    } catch (e) {
+      showSnackbar(context: context, message: e.toString());
     }
   }
 
@@ -121,21 +156,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: <Widget>[
               Stack(
                 alignment: Alignment.bottomRight,
-                children: [
-                  const Icon(Icons.person, size: 70)
-                      .box
-                      .color(mehroonColor)
-                      .roundedFull
-                      .size(120, 120)
-                      .clip(Clip.antiAlias)
-                      .make(),
+                children: <Widget>[
+                  makeBox(
+                    widget: _profileImage.isNotEmpty
+                        ? Image.file(
+                            File(_profileImage),
+                            fit: BoxFit.cover,
+                          )
+                        : dummyIcon(),
+                  ),
                   Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: const Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: whiteColor,
+                    bottom: -4,
+                    right: -4,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        size: 30,
+                        color: whiteColor,
+                      ),
+                      onPressed: pickProfile,
                     ).box.outerShadowSm.make(),
                   ),
                 ],
@@ -217,4 +256,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ).onTap(unFocus),
     );
   }
+
+  Icon dummyIcon() {
+    return const Icon(
+      Icons.person,
+      size: 70,
+    );
+  }
+
+  Widget makeBox({required Widget widget}) => widget.box
+      .color(mehroonColor)
+      .roundedFull
+      .size(120, 120)
+      .clip(Clip.antiAlias)
+      .make();
 }

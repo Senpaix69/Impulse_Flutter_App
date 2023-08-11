@@ -63,7 +63,8 @@ authRouter.post("/api/signin", async (req, res) => {
 
 authRouter.post("/api/updateUser", async (req, res) => {
   try {
-    const { id, name, address, phone } = req.body;
+    const { id, name, address, phone, downloadableProfileUrl, profileUrl } =
+      req.body;
     const newUser = await User.findById(id);
 
     if (!newUser) {
@@ -73,6 +74,11 @@ authRouter.post("/api/updateUser", async (req, res) => {
     if (name) newUser.name = name;
     if (address) newUser.address = address;
     if (phone) newUser.phoneNo = phone;
+    if (downloadableProfileUrl)
+      newUser.downloadableProfileUrl = downloadableProfileUrl;
+    if (profileUrl) newUser.profileUrl = profileUrl;
+
+    console.log(newUser);
 
     await newUser.save();
     res.json({ token: generateToken(id), newUser });
