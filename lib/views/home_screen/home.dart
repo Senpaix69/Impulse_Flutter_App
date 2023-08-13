@@ -56,23 +56,33 @@ class Home extends StatelessWidget {
       const ProfileScreen(),
     ];
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: <Widget>[
-          Obx(() => Expanded(child: navBody[controller.currentNavIndex.value])),
-        ],
-      ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          currentIndex: controller.currentNavIndex.value,
-          onTap: (value) => controller.currentNavIndex.value = value,
-          selectedLabelStyle: const TextStyle(fontFamily: bold),
-          items: navItems,
-          selectedItemColor: whiteColor,
-          unselectedItemColor: const Color.fromARGB(130, 255, 255, 255),
-          backgroundColor: mehroonColor,
-          type: BottomNavigationBarType.fixed,
+    return WillPopScope(
+      onWillPop: () async {
+        if (controller.currentNavIndex.value == 0) {
+          return true;
+        }
+        controller.currentNavIndex.value = 0;
+        return false;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          children: <Widget>[
+            Obx(() =>
+                Expanded(child: navBody[controller.currentNavIndex.value])),
+          ],
+        ),
+        bottomNavigationBar: Obx(
+          () => BottomNavigationBar(
+            currentIndex: controller.currentNavIndex.value,
+            onTap: (value) => controller.currentNavIndex.value = value,
+            selectedLabelStyle: const TextStyle(fontFamily: bold),
+            items: navItems,
+            selectedItemColor: whiteColor,
+            unselectedItemColor: const Color.fromARGB(130, 255, 255, 255),
+            backgroundColor: mehroonColor,
+            type: BottomNavigationBarType.fixed,
+          ),
         ),
       ),
     );

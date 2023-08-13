@@ -15,60 +15,54 @@ class ExploreScreen extends StatelessWidget {
       controller.currentNavIndex.value = 0;
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        goToHome();
-        return false;
-      },
-      child: bgWidget(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: whiteColor),
-              onPressed: goToHome,
-            ),
-            title: "Explore".text.color(whiteColor).fontFamily(semibold).make(),
+    return bgWidget(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: whiteColor),
+            onPressed: goToHome,
           ),
-          body: Container(
-            padding: const EdgeInsets.all(10),
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: 9,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 8.0,
-                mainAxisExtent: 190,
-                crossAxisSpacing: 8.0,
-              ),
-              itemBuilder: (context, index) => Column(
-                children: <Widget>[
-                  Image.asset(
-                    categoriesListImgs[index],
-                    height: 120,
-                    width: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  10.heightBox,
-                  categoriesList[index]
-                      .text
-                      .color(darkFontGrey)
-                      .align(TextAlign.center)
-                      .make(),
-                ],
-              )
-                  .box
-                  .white
-                  .roundedSM
-                  .padding(const EdgeInsets.all(6))
-                  .outerShadowSm
-                  .clip(Clip.antiAlias)
-                  .make()
-                  .onTap(
-                    () => Get.to(
-                      () => CategoryDetails(title: categoriesList[index]),
-                    ),
-                  ),
+          title: "Explore".text.color(whiteColor).fontFamily(semibold).make(),
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(10),
+          child: GridView.builder(
+            shrinkWrap: true,
+            itemCount: 9,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 8.0,
+              mainAxisExtent: 190,
+              crossAxisSpacing: 8.0,
             ),
+            itemBuilder: (context, index) => Column(
+              children: <Widget>[
+                Image.asset(
+                  categoriesListImgs[index],
+                  height: 120,
+                  width: 200,
+                  fit: BoxFit.cover,
+                ),
+                10.heightBox,
+                categoriesList[index]
+                    .text
+                    .color(darkFontGrey)
+                    .align(TextAlign.center)
+                    .make(),
+              ],
+            )
+                .box
+                .white
+                .roundedSM
+                .padding(const EdgeInsets.all(6))
+                .outerShadowSm
+                .clip(Clip.antiAlias)
+                .make()
+                .onTap(
+                  () => Get.to(
+                    () => CategoryDetails(title: categoriesList[index]),
+                  ),
+                ),
           ),
         ),
       ),

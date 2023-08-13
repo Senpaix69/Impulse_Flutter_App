@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
-import 'package:impulse/controllers/home_controller.dart';
 import 'package:impulse/controllers/app_routes.dart';
 import 'package:impulse/controllers/user_controller.dart';
 import 'package:impulse/views/profile_screen/widgets/profile_button.dart';
@@ -15,57 +14,50 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<HomeController>();
     final userController = Get.find<UserController>();
 
-    return WillPopScope(
-      onWillPop: () async {
-        controller.currentNavIndex.value = 0;
-        return false;
-      },
-      child: bgWidget(
-        background: imgBackgroundHalf,
-        child: SafeArea(
-          child: Obx(
-            () => Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(10.0),
-              child: userController.isLoggedIn
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const UserDetails(),
-                        20.heightBox,
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: <Widget>[
-                                profileButtons(),
-                                20.heightBox,
-                                profileTiles(),
-                                20.heightBox,
-                              ],
-                            ),
+    return bgWidget(
+      background: imgBackgroundHalf,
+      child: SafeArea(
+        child: Obx(
+          () => Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(10.0),
+            child: userController.isLoggedIn
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const UserDetails(),
+                      20.heightBox,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              profileButtons(),
+                              20.heightBox,
+                              profileTiles(),
+                              20.heightBox,
+                            ],
                           ),
                         ),
-                      ],
-                    )
-                  : Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          appLogoWidget(),
-                          10.heightBox,
-                          customButton(
-                            onPress: () => Get.toNamed(AppRoutes.loginScreen),
-                            title: "Please Sign-In",
-                            textColor: whiteColor,
-                            btnColor: mehroonDark,
-                          ).box.width(context.screenWidth * 0.5).make(),
-                        ],
                       ),
+                    ],
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        appLogoWidget(),
+                        10.heightBox,
+                        customButton(
+                          onPress: () => Get.toNamed(AppRoutes.loginScreen),
+                          title: "Please Sign-In",
+                          textColor: whiteColor,
+                          btnColor: mehroonDark,
+                        ).box.width(context.screenWidth * 0.5).make(),
+                      ],
                     ),
-            ),
+                  ),
           ),
         ),
       ),
