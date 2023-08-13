@@ -26,7 +26,7 @@ class CustomSwiper extends StatelessWidget {
           enlargeCenterPage: true,
           onPageChanged: (index) => controller.itemDetails.value = index,
           itemCount: sliderList.length,
-          itemBuilder: (context, index) => Image.asset(
+          itemBuilder: (context, index) => Image.network(
             sliderList[index],
             fit: BoxFit.fill,
           )

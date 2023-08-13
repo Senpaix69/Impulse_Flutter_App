@@ -79,7 +79,10 @@ class ExploreScreen extends StatelessWidget {
                       .make()
                       .onTap(
                         () => Get.to(
-                          () => CategoryDetails(title: categories[index].title),
+                          () => CategoryDetails(
+                            title: categories[index].title,
+                            id: categories[index].id,
+                          ),
                         ),
                       ),
                 ),

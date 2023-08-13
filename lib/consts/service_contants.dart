@@ -7,3 +7,10 @@ const updUser = "/api/updateUser";
 const addCategory = "/api/addCategory";
 const getCategory = "/api/getCategory";
 const allCategories = "/api/getAllCategories";
+
+// item routes
+const addItem = "/api/addItem";
+const getItem = "/api/getItem";
+const allItems = "/api/getAllItems";
+const deleteItem = "/api/deleteItem";
+const updateItem = "/api/updateItem";

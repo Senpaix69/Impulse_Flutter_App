@@ -8,7 +8,15 @@ enum QuantityActions {
 }
 
 class ColorAndQuantity extends StatelessWidget {
-  const ColorAndQuantity({Key? key}) : super(key: key);
+  final List<String> colors;
+  final double price;
+  final int available;
+  const ColorAndQuantity({
+    Key? key,
+    required this.colors,
+    required this.price,
+    required this.available,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +27,7 @@ class ColorAndQuantity extends StatelessWidget {
       switch (action) {
         case QuantityActions.add:
           val += 1;
-          if (val > 50) {
+          if (val > available) {
             return;
           }
           controller.quantity.value = val;
@@ -40,21 +48,26 @@ class ColorAndQuantity extends StatelessWidget {
             "Color".text.color(darkFontGrey).make().marginOnly(left: 10),
             (context.screenWidth / 5).widthBox,
             Obx(
-              () => Row(
-                children: List.generate(
-                  colorsList.length,
-                  (index) => VxBox(
-                          child: index == controller.selectedColor.value
-                              ? const Icon(Icons.check)
-                              : null)
-                      .size(35, 35)
-                      .color(colorsList[index])
-                      .margin(
-                        const EdgeInsets.symmetric(horizontal: 6.0),
-                      )
-                      .roundedFull
-                      .make()
-                      .onTap(() => controller.selectedColor.value = index),
+              () => Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      colors.length,
+                      (index) => VxBox(
+                              child: index == controller.selectedColor.value
+                                  ? const Icon(Icons.check)
+                                  : null)
+                          .size(35, 35)
+                          .color(Color(int.parse(colors[index])))
+                          .margin(
+                            const EdgeInsets.symmetric(horizontal: 6.0),
+                          )
+                          .roundedFull
+                          .make()
+                          .onTap(() => controller.selectedColor.value = index),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -89,7 +102,7 @@ class ColorAndQuantity extends StatelessWidget {
                 ),
               ],
             ),
-            "50 Available"
+            "$available Available"
                 .text
                 .color(darkFontGrey)
                 .overflow(TextOverflow.ellipsis)
@@ -101,7 +114,7 @@ class ColorAndQuantity extends StatelessWidget {
           children: <Widget>[
             "Total Amount".text.color(darkFontGrey).make().marginOnly(left: 10),
             (context.screenWidth / 11).widthBox,
-            Obx(() => ("\$${controller.quantity.value * 35000}.00")
+            Obx(() => ("\$${controller.quantity.value * price}")
                 .text
                 .size(16)
                 .fontFamily(bold)

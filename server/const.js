@@ -12,6 +12,13 @@ const GET_ALL_CATEGORIES = "/api/getAllCategories";
 const DELETE_CATEGORY = "/api/deleteCategory";
 const UPDATE_CATEGORY = "/api/updateCategory";
 
+// item routes
+const ADD_ITEM = "/api/addItem";
+const GET_ITEM = "/api/getItem";
+const GET_ALL_ITEMS = "/api/getAllItems";
+const DELETE_ITEM = "/api/deleteItem";
+const UPDATE_ITEM = "/api/updateItem";
+
 module.exports = {
   PASSWORD_KEY,
   SIGN_IN,
@@ -22,4 +29,9 @@ module.exports = {
   GET_CATEGORY,
   UPDATE_CATEGORY,
   DELETE_CATEGORY,
+  ADD_ITEM,
+  DELETE_ITEM,
+  GET_ITEM,
+  GET_ALL_ITEMS,
+  UPDATE_ITEM,
 };

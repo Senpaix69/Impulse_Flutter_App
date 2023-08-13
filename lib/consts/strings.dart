@@ -37,6 +37,8 @@ const description = "Description";
 const descriptionList =
     "1- Good Quality\n2- Better Performance\n3-Yo Funny Singh";
 const sugProd = "Products you may also like";
+const showMore = "show more";
+const showLess = "show less";
 
 // SharedPrefs constants
 const userKey = 'user';

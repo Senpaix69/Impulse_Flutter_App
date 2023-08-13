@@ -11,11 +11,11 @@ class ExploreService {
 
   Future<Map<String, dynamic>> _sendRequest(
     String url,
-    Map<String, dynamic> queryParams,
+    String queryParams,
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('$myAPI$url'),
+        Uri.parse('$horokuAddr$url$queryParams'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
 
@@ -26,13 +26,23 @@ class ExploreService {
   }
 
   Future<List<Category>> getAllCategories() async {
-    final response = await _sendRequest(allCategories, {});
+    final response = await _sendRequest(allCategories, "");
     if (response['status'] == 200) {
       final parsedCategories = parseCategories(response['body']);
       return parsedCategories;
     } else {
       throw Exception("Failed to fetch categories");
     }
+  }
+
+  Future<List<String>> getSubCategories({required String id}) async {
+    final response = await _sendRequest(getCategory, "/$id");
+    if (response['status'] == 200) {
+      final data = jsonDecode(response['body']);
+      final subcategories = data['category']['subcategories'];
+      return List<String>.from(subcategories);
+    }
+    throw Exception("Failed to fetch subcategories");
   }
 
   List<Category> parseCategories(String responseBody) {

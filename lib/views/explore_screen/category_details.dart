@@ -1,15 +1,22 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/models/item.dart';
+import 'package:impulse/services/explore_service.dart';
+import 'package:impulse/services/item_service.dart';
 import 'package:impulse/views/explore_screen/item_details.dart';
 import 'package:impulse/views/explore_screen/widgets/subcategories_list.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
 class CategoryDetails extends StatelessWidget {
   final String title;
-  const CategoryDetails({super.key, required this.title});
+  final String id;
+  const CategoryDetails({super.key, required this.title, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    final exploreService = ExploreService();
+    final itemService = ItemService();
+
     return bgWidget(
       child: Scaffold(
         appBar: AppBar(
@@ -23,50 +30,96 @@ class CategoryDetails extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              subCategories(childCount: 6),
-              20.heightBox,
-              Expanded(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: 6,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                    mainAxisExtent: 250.0,
-                  ),
-                  itemBuilder: (context, index) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Image.asset(
-                        imgP5,
-                        height: 150,
-                        width: 150,
-                        fit: BoxFit.cover,
-                      ),
-                      const Spacer(),
-                      "Luxary Bags"
+              FutureBuilder(
+                future: exploreService.getSubCategories(id: id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting ||
+                      snapshot.connectionState == ConnectionState.active) {
+                    return circularIndicator();
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: "Network Connection Error"
                           .text
-                          .fontFamily(semibold)
+                          .size(18)
                           .color(darkFontGrey)
                           .make(),
-                      5.heightBox,
-                      "\$600"
-                          .text
-                          .color(mehroonColor)
-                          .fontFamily(bold)
-                          .size(16)
-                          .make()
-                    ],
-                  )
-                      .box
-                      .white
-                      .padding(const EdgeInsets.all(12.0))
-                      .roundedSM
-                      .make()
-                      .onTap(() => Get.to(() => const ItemDetails(
-                            title: "Iphone 13 Pro, 4/128",
-                          ))),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    final subcat = snapshot.data;
+                    return subCategories(subcategories: subcat ?? []);
+                  }
+                  return circularIndicator();
+                },
+              ),
+              20.heightBox,
+              Expanded(
+                child: FutureBuilder<List<Item>>(
+                  future: itemService.getAllItems(categoryId: id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        snapshot.connectionState == ConnectionState.active) {
+                      return circularIndicator();
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: snapshot.error
+                            .toString()
+                            .text
+                            .size(18)
+                            .color(darkFontGrey)
+                            .make(),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      final listItems = snapshot.data ?? [];
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: listItems.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8.0,
+                          mainAxisSpacing: 8.0,
+                          mainAxisExtent: 250.0,
+                        ),
+                        itemBuilder: (context, index) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            FadeInImage(
+                              placeholder: const AssetImage(placeholder1),
+                              image: NetworkImage(listItems.first.images.first),
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                            const Spacer(),
+                            listItems.first.title.text
+                                .fontFamily(semibold)
+                                .color(darkFontGrey)
+                                .make(),
+                            5.heightBox,
+                            '\$${listItems.first.price}'
+                                .text
+                                .color(mehroonColor)
+                                .fontFamily(bold)
+                                .size(16)
+                                .make()
+                          ],
+                        )
+                            .box
+                            .white
+                            .padding(const EdgeInsets.all(12.0))
+                            .roundedSM
+                            .make()
+                            .onTap(
+                              () => Get.to(
+                                () => ItemDetails(item: listItems[index]),
+                              ),
+                            ),
+                      );
+                    }
+                    return circularIndicator();
+                  },
                 ),
               ),
             ],
@@ -75,4 +128,7 @@ class CategoryDetails extends StatelessWidget {
       ),
     );
   }
+
+  Center circularIndicator() =>
+      const Center(child: CircularProgressIndicator(color: mehroonColor));
 }

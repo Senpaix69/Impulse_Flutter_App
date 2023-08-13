@@ -21,15 +21,13 @@ exploreRouter.post(ADD_CATEGORY, async (req, res) => {
 
     await newCategory.save();
 
-    res
-      .status(200)
-      .json({ msg: "Category added successfully", category: newCategory });
+    res.json({ msg: "Category added successfully", category: newCategory });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-exploreRouter.get(GET_CATEGORY, async (req, res) => {
+exploreRouter.get(`${GET_CATEGORY}/:id`, async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findById(categoryId);

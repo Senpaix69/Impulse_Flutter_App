@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/controllers/item_controller.dart';
+import 'package:impulse/models/item.dart';
 import 'package:impulse/views/explore_screen/widgets/action_button.dart';
 import 'package:impulse/views/explore_screen/widgets/color_quantity.dart';
 import 'package:impulse/views/explore_screen/widgets/items_swiper.dart';
@@ -7,11 +9,13 @@ import 'package:impulse/widget_common/custom_button.dart';
 import 'package:impulse/widget_common/products_list.dart';
 
 class ItemDetails extends StatelessWidget {
-  final String title;
-  const ItemDetails({Key? key, required this.title}) : super(key: key);
+  final Item item;
+  const ItemDetails({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ItemController());
+
     return Scaffold(
       appBar: myAppBar(context),
       body: Container(
@@ -23,26 +27,50 @@ class ItemDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const CustomSwiper(sliderList: itemDetailsImg),
+                  CustomSwiper(sliderList: item.images),
                   10.heightBox,
                   itemTitleAndRating().box.white.outerShadow.p16.make(),
                   saleType().box.p12.color(lightGrey).make(),
-                  const ColorAndQuantity(),
+                  ColorAndQuantity(
+                    colors: item.colors,
+                    price: item.price.toDouble(),
+                    available: item.availableQuantity,
+                  ),
                   20.heightBox,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      description.text.fontFamily(bold).size(16).make(),
-                      5.heightBox,
-                      descriptionList.text.make(),
-                    ],
-                  )
-                      .box
-                      .padding(const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 16))
-                      .white
-                      .outerShadow
-                      .make(),
+                  Obx(
+                    () => Container(
+                      height: controller.show ? null : 200.0,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 16),
+                      color: whiteColor,
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                description.text
+                                    .fontFamily(bold)
+                                    .size(16)
+                                    .overflow(TextOverflow.ellipsis)
+                                    .make(),
+                                (controller.show ? showLess : showMore)
+                                    .text
+                                    .color(mehroonDark)
+                                    .align(TextAlign.right)
+                                    .make()
+                                    .onTap(() => controller.toggleHeight()),
+                              ],
+                            ),
+                            5.heightBox,
+                            item.description.text.make(),
+                          ],
+                        ),
+                      ),
+                    ).box.outerShadow.make(),
+                  ),
                   itemButtons().box.p12.make(),
                   10.heightBox,
                   productLists(
@@ -86,7 +114,7 @@ class ItemDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             "Sale".text.color(darkFontGrey).make(),
-            "In House Product".text.color(darkFontGrey).make(),
+            item.productType.text.color(darkFontGrey).make(),
           ],
         ),
         const Spacer(),
@@ -102,11 +130,21 @@ class ItemDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        title.text.fontFamily(bold).color(darkFontGrey).size(16).make(),
+        item.title.text.fontFamily(bold).color(darkFontGrey).size(16).make(),
         10.heightBox,
-        VxRating(onRatingUpdate: (value) {}),
+        VxRating(
+          isSelectable: false,
+          maxRating: 5.0,
+          value: item.rating,
+          onRatingUpdate: (value) {},
+        ),
         10.heightBox,
-        "\$35,000".text.fontFamily(bold).color(mehroonColor).size(16).make(),
+        "\$${item.price}"
+            .text
+            .fontFamily(bold)
+            .color(mehroonColor)
+            .size(16)
+            .make(),
         10.heightBox,
       ],
     );

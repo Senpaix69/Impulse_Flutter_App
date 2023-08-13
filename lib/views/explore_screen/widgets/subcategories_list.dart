@@ -1,12 +1,12 @@
 import 'package:impulse/consts/consts.dart';
 
-SingleChildScrollView subCategories({required int childCount}) {
+SingleChildScrollView subCategories({required List<String> subcategories}) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(
       children: List.generate(
-          childCount,
-          (index) => "Baby Clothing"
+          subcategories.length,
+          (index) => subcategories[index]
               .text
               .size(12)
               .fontFamily(semibold)

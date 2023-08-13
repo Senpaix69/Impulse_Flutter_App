@@ -17,7 +17,7 @@ class AuthService {
   ) async {
     try {
       final response = await http.post(
-        Uri.parse('$myAPI$url'),
+        Uri.parse('$horokuAddr$url'),
         body: jsonEncode(body),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
