@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' show immutable;
+import 'package:impulse/consts/models.dart';
 
 @immutable
 class User {
@@ -28,31 +29,31 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      password: json['password'] as String,
-      address: json['address'] as String,
-      phone: json['phone'] as String,
-      type: json['type'] as String,
-      token: json['token'] as String,
-      profileUrl: json['profileUrl'] as String,
-      downloadableProfileUrl: json['downloadableProfileUrl'] as String,
+      id: json[userIdColumn] as String,
+      name: json[userNameColumn] as String,
+      email: json[userEmailColumn] as String,
+      password: json[userPasswordColumn] as String,
+      address: json[userAddressColumn] as String,
+      phone: json[userPhoneColumn] as String,
+      type: json[userTypeColumn] as String,
+      token: json[userTokenColumn] as String,
+      profileUrl: json[userProfileUrlColumn] as String,
+      downloadableProfileUrl: json[userDProfileUrlColumn] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'email': email,
-      'password': password,
-      'address': address,
-      'phone': phone,
-      'type': type,
-      'token': token,
-      'profileUrl': profileUrl,
-      'downloadableProfileUrl': downloadableProfileUrl,
+      userIdColumn: id,
+      userNameColumn: name,
+      userEmailColumn: email,
+      userPasswordColumn: password,
+      userAddressColumn: address,
+      userPhoneColumn: phone,
+      userTypeColumn: type,
+      userTokenColumn: token,
+      userProfileUrlColumn: profileUrl,
+      userDProfileUrlColumn: downloadableProfileUrl,
     };
   }
 

@@ -175,7 +175,7 @@ class FirebaseService {
 
   Future<void> deleteUserDocumentary({required String doc}) async {
     try {
-      final ref = _storage.ref('${_user.currentUser!.id}/$doc/');
+      final ref = _storage.ref('$doc/${_user.currentUser!.id}/');
       final result = await ref.listAll();
 
       if (result.items.isNotEmpty) {
@@ -198,7 +198,7 @@ class FirebaseService {
     final copyPath = await copyFile(filepath: profilePicPath);
     await deleteUserDocumentary(doc: "profile_pictures");
     final storageRef =
-        _storage.ref().child('$userId/profile_pictures').child(fileName);
+        _storage.ref().child('profile_pictures/$userId').child(fileName);
     final uploadTask = storageRef.putFile(file);
     await uploadTask.whenComplete(() => null);
 
@@ -243,21 +243,4 @@ class FirebaseService {
       throw Exception(e.toString());
     }
   }
-
-  // Future<String?> downloadFile({required String fileURL}) async {
-  //   try {
-  //     final fileName = getFileName(url: fileURL);
-  //     final response = await http.get(Uri.parse(fileURL));
-  //     if (response.statusCode == 200) {
-  //       final appDir = await getApplicationDocumentsDirectory();
-  //       final file = File('${appDir.path}/downloaded/_$fileName');
-  //       await file.create(recursive: true);
-  //       await file.writeAsBytes(response.bodyBytes);
-  //       return file.path;
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
 }

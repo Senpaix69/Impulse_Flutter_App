@@ -6,10 +6,12 @@ const PORT = process.env.PORT || 3000;
 
 // Import routes
 const authRouter = require("./router/auth");
+const exploreRouter = require("./router/explore");
 
 // Middleware
 app.use(express.json());
 app.use(authRouter);
+app.use(exploreRouter);
 
 // Connect to MongoDB using Mongoose
 mongoose

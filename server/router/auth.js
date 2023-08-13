@@ -3,11 +3,11 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 const authRouter = express.Router();
 const User = require("../models/User");
-const { PASSWORD_KEY } = require("../const");
+const { PASSWORD_KEY, SIGN_UP, SIGN_IN, UPDATE_USER } = require("../const");
 
 const generateToken = (id) => jwt.sign({ id }, PASSWORD_KEY);
 
-authRouter.post("/api/signup", async (req, res) => {
+authRouter.post(SIGN_UP, async (req, res) => {
   try {
     const { user, method } = req.body;
     const { name, email, password, phone, downloadableProfileUrl } = user;
@@ -20,7 +20,7 @@ authRouter.post("/api/signup", async (req, res) => {
       } else if (method === 1) {
         return res.json({
           token: generateToken(existingUser._id),
-          newUser: existingUser,
+          ...existingUser._doc,
         });
       }
     }
@@ -31,16 +31,19 @@ authRouter.post("/api/signup", async (req, res) => {
     if (phone) newUser.phoneNo = phone;
     if (downloadableProfileUrl)
       newUser.downloadableProfileUrl = downloadableProfileUrl;
-
+    
     await newUser.save();
 
-    res.json({ token: generateToken(newUser._id), newUser });
+    res.json({
+      token: generateToken(newUser._id),
+      ...newUser._doc,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-authRouter.post("/api/signin", async (req, res) => {
+authRouter.post(SIGN_IN, async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("Hello World");
@@ -55,17 +58,20 @@ authRouter.post("/api/signin", async (req, res) => {
       return res.status(401).json({ msg: "Invalid Password" });
     }
 
-    res.json({ token: generateToken(newUser._id), newUser });
+    res.json({
+      token: generateToken(newUser._id),
+      ...newUser._doc,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-authRouter.post("/api/updateUser", async (req, res) => {
+authRouter.post(UPDATE_USER, async (req, res) => {
   try {
-    const { id, name, address, phone, downloadableProfileUrl, profileUrl } =
+    const { _id, name, address, phone, downloadableProfileUrl, profileUrl } =
       req.body;
-    const newUser = await User.findById(id);
+    const newUser = await User.findById(_id);
 
     if (!newUser) {
       return res.status(400).json({ msg: "User not found!" });
@@ -79,7 +85,10 @@ authRouter.post("/api/updateUser", async (req, res) => {
     if (profileUrl) newUser.profileUrl = profileUrl;
 
     await newUser.save();
-    res.json({ token: generateToken(id), newUser });
+    res.json({
+      token: generateToken(_id),
+      ...newUser._doc,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

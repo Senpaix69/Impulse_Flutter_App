@@ -60,6 +60,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: title,
       );
 
+  void showSnack({required String message}) => showSnackbar(
+        context: context,
+        message: message,
+      );
+
   void saveProfile() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -94,6 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         final data = jsonDecode(response['body']);
         await _userController.setUser(data);
         setState(() => isEditing = false);
+        showSnack(message: "Profile saved successfully");
         return;
       }
 

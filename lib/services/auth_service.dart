@@ -1,5 +1,6 @@
-import 'dart:convert';
+import 'dart:convert' show jsonEncode;
 import 'package:impulse/consts/env.dart';
+import 'package:impulse/consts/service_contants.dart';
 import 'package:impulse/models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +17,7 @@ class AuthService {
   ) async {
     try {
       final response = await http.post(
-        Uri.parse('$horokuAddr$url'),
+        Uri.parse('$myAPI$url'),
         body: jsonEncode(body),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
@@ -25,24 +26,6 @@ class AuthService {
     } catch (e) {
       return {'status': -1, 'body': e.toString()};
     }
-  }
-
-  Map<String, dynamic> parseUserResponse(Map<String, dynamic> response) {
-    final data = jsonDecode(response['body']);
-    final userData = data['newUser'];
-    final user = User(
-      id: userData['_id'],
-      name: userData['name'],
-      email: userData['email'],
-      password: userData['password'],
-      address: userData['address'],
-      downloadableProfileUrl: userData['downloadableProfileUrl'],
-      profileUrl: userData['profileUrl'],
-      phone: userData['phoneNo'],
-      type: userData['type'],
-      token: data['token'],
-    );
-    return {'status': response['status'], 'body': jsonEncode(user)};
   }
 
   Future<Map<String, dynamic>> signUpUser({
@@ -62,32 +45,23 @@ class AuthService {
       downloadableProfileUrl: downloadableProfileUrl,
     );
 
-    final response = await _sendRequest(
-      '/api/signup',
+    return _sendRequest(
+      signUp,
       {'user': user.toJson(), 'method': method},
     );
-
-    return response['status'] == 200 ? parseUserResponse(response) : response;
   }
 
   Future<Map<String, dynamic>> signInUser({
     required String email,
     required String password,
   }) async {
-    final response = await _sendRequest(
-      '/api/signin',
+    return _sendRequest(
+      signIn,
       {"email": email, "password": password},
     );
-
-    return response['status'] == 200 ? parseUserResponse(response) : response;
   }
 
   Future<Map<String, dynamic>> updateUser({required User user}) async {
-    final response = await _sendRequest(
-      '/api/updateUser',
-      user.toJson(),
-    );
-
-    return response['status'] == 200 ? parseUserResponse(response) : response;
+    return _sendRequest(updUser, user.toJson());
   }
 }

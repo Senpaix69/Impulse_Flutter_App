@@ -1,0 +1,22 @@
+const mongoose = require("mongoose");
+
+const categorySchema = mongoose.Schema({
+  imageUrl: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  subcategories: [
+    {
+      type: String,
+    },
+  ],
+});
+
+const Category = mongoose.model("category", categorySchema);
+
+module.exports = Category;

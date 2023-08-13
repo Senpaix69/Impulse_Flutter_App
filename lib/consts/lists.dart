@@ -45,32 +45,6 @@ const featuredListTitles2 = [
   "T-Shirts",
 ];
 
-// categories
-
-const categoriesList = [
-  "Women Clothing",
-  "Men Clothing & Fashion",
-  "Computer and Accessories",
-  "Auto Mobile",
-  "Kids & Toys",
-  "Sports",
-  "Jewelery",
-  "Cellphone & Tab",
-  "Furniture",
-];
-
-const categoriesListImgs = [
-  imgFc1,
-  imgFc8,
-  imgFc2,
-  imgFc3,
-  imgFc4,
-  imgFc5,
-  imgFc7,
-  imgFc6,
-  imgFc9,
-];
-
 // profile constants
 const listTiles = [
   "My Wallet",
