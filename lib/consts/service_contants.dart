@@ -14,3 +14,4 @@ const getItem = "/api/getItem";
 const allItems = "/api/getAllItems";
 const deleteItem = "/api/deleteItem";
 const updateItem = "/api/updateItem";
+const getItemDetails = "/api/getItemDetails";

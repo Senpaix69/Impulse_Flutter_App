@@ -1,12 +1,13 @@
-import 'package:flutter/foundation.dart' show listEquals, immutable;
+import 'package:flutter/foundation.dart' show immutable, listEquals;
 import 'package:impulse/consts/models.dart';
+import 'package:impulse/models/sub_category.dart';
 
 @immutable
 class Category {
   final String id;
   final String imageUrl;
   final String title;
-  final List<String> subcategories;
+  final List<SubCategory> subcategories;
 
   const Category({
     required this.id,
@@ -19,14 +20,17 @@ class Category {
       : id = json[categoryIdColumn] as String,
         imageUrl = json[categoryImageColumn] as String,
         title = json[categoryTitleColumn] as String,
-        subcategories = List<String>.from(json[categorySubCatColumn]);
+        subcategories = (json[categorySubCatColumn] as List)
+            .map((subCatJson) => SubCategory.fromJson(subCatJson))
+            .toList();
 
   Map<String, dynamic> toJson() {
     return {
       categoryIdColumn: id,
       categoryImageColumn: imageUrl,
       categoryTitleColumn: title,
-      categorySubCatColumn: subcategories,
+      categorySubCatColumn:
+          subcategories.map((subCat) => subCat.toJson()).toList(),
     };
   }
 
@@ -34,7 +38,7 @@ class Category {
     String? id,
     String? imageUrl,
     String? title,
-    List<String>? subcategories,
+    List<SubCategory>? subcategories,
   }) {
     return Category(
       id: id ?? this.id,

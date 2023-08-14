@@ -3,6 +3,7 @@ import 'package:impulse/consts/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:impulse/consts/service_contants.dart';
 import 'package:impulse/models/category.dart';
+import 'package:impulse/models/sub_category.dart';
 
 class ExploreService {
   ExploreService._privateConstructor();
@@ -15,7 +16,7 @@ class ExploreService {
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('$horokuAddr$url$queryParams'),
+        Uri.parse('$myAPI$url$queryParams'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
 
@@ -26,23 +27,32 @@ class ExploreService {
   }
 
   Future<List<Category>> getAllCategories() async {
-    final response = await _sendRequest(allCategories, "");
-    if (response['status'] == 200) {
-      final parsedCategories = parseCategories(response['body']);
-      return parsedCategories;
-    } else {
-      throw Exception("Failed to fetch categories");
+    try {
+      final response = await _sendRequest(allCategories, "");
+      if (response['status'] == 200) {
+        final parsedCategories = parseCategories(response['body']);
+        return parsedCategories;
+      }
+      return [];
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 
-  Future<List<String>> getSubCategories({required String id}) async {
-    final response = await _sendRequest(getCategory, "/$id");
-    if (response['status'] == 200) {
-      final data = jsonDecode(response['body']);
-      final subcategories = data['category']['subcategories'];
-      return List<String>.from(subcategories);
+  Future<List<SubCategory>> getSubCategories({required String id}) async {
+    try {
+      final response = await _sendRequest(getCategory, "/$id");
+      if (response['status'] == 200) {
+        final data = jsonDecode(response['body']);
+        final subcategories = (data['category']['subcategories'] as List)
+            .map((subCatJson) => SubCategory.fromJson(subCatJson))
+            .toList();
+        return subcategories;
+      }
+      return [];
+    } catch (e) {
+      throw Exception(e.toString());
     }
-    throw Exception("Failed to fetch subcategories");
   }
 
   List<Category> parseCategories(String responseBody) {

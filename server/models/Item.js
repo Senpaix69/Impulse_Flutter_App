@@ -5,14 +5,22 @@ const item = mongoose.Schema({
     type: String,
     required: true,
   },
-  images: [
-    {
-      type: String,
-      trim: true,
-      required: true,
-    },
-  ],
+  image: {
+    type: String,
+    trim: true,
+    required: true,
+  },
   categoryId: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  itemId: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  subCatId: {
     type: String,
     trim: true,
     required: true,
@@ -23,33 +31,6 @@ const item = mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
-  },
-  productType: {
-    type: String,
-    required: true,
-  },
-  colors: [
-    {
-      type: String,
-      trim: true,
-    },
-  ],
-  availableQuantity: {
-    type: Number,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  videoUrl: {
-    type: String,
-    trim: true,
-    default: "",
-  },
-  privacyPolicy: {
-    type: String,
     required: true,
   },
 });

@@ -3,6 +3,7 @@ import 'package:impulse/consts/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:impulse/consts/service_contants.dart';
 import 'package:impulse/models/item.dart';
+import 'package:impulse/models/item_details.dart';
 
 class ItemService {
   ItemService._privateConstructor();
@@ -17,7 +18,7 @@ class ItemService {
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('$horokuAddr$url$queryParams'),
+        Uri.parse('$myAPI$url$queryParams'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
 
@@ -36,6 +37,16 @@ class ItemService {
       return itemList;
     } else {
       return [];
+    }
+  }
+
+  Future<ItemDetail> getItemDetail({required String itemId}) async {
+    try {
+      final response = await _sendRequest(getItemDetails, "/$itemId");
+      final data = jsonDecode(response['body']);
+      return ItemDetail.fromJson(data);
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

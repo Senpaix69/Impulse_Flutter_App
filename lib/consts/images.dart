@@ -52,7 +52,7 @@ const icWholeSale = "assets/icons/wholesale.png";
 
 //images
 const placeholder = 'assets/images/placeholder.png';
-const placeholder1 = 'assets/images/placeholder-1.png';
+const errorImage = 'assets/images/error.png';
 const imgBackground = "assets/icons/bg-min.png";
 const imgBackgroundHalf = "assets/icons/bg-half.png";
 const imgBackgroundDark = "assets/icons/bg-dark.jpg";

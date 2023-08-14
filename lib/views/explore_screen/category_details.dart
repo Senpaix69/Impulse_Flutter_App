@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/models/item.dart';
+import 'package:impulse/models/sub_category.dart';
 import 'package:impulse/services/explore_service.dart';
 import 'package:impulse/services/item_service.dart';
 import 'package:impulse/views/explore_screen/item_details.dart';
 import 'package:impulse/views/explore_screen/widgets/subcategories_list.dart';
+import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
+import 'package:impulse/widget_common/error_message.dart';
 
 class CategoryDetails extends StatelessWidget {
   final String title;
@@ -30,18 +33,19 @@ class CategoryDetails extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              FutureBuilder(
+              FutureBuilder<List<SubCategory>>(
                 future: exploreService.getSubCategories(id: id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting ||
                       snapshot.connectionState == ConnectionState.active) {
-                    return circularIndicator();
+                    return const SizedBox();
                   } else if (snapshot.hasError) {
                     return Center(
-                      child: "Network Connection Error"
+                      child: snapshot.error
+                          .toString()
                           .text
                           .size(18)
-                          .color(darkFontGrey)
+                          .color(whiteColor)
                           .make(),
                     );
                   }
@@ -49,7 +53,7 @@ class CategoryDetails extends StatelessWidget {
                     final subcat = snapshot.data;
                     return subCategories(subcategories: subcat ?? []);
                   }
-                  return circularIndicator();
+                  return const SizedBox();
                 },
               ),
               20.heightBox,
@@ -59,16 +63,10 @@ class CategoryDetails extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting ||
                         snapshot.connectionState == ConnectionState.active) {
-                      return circularIndicator();
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: snapshot.error
-                            .toString()
-                            .text
-                            .size(18)
-                            .color(darkFontGrey)
-                            .make(),
-                      );
+                      return appLoading();
+                    }
+                    if (snapshot.hasError) {
+                      return errorMessage(text: snapshot.error.toString());
                     }
                     if (snapshot.hasData) {
                       final listItems = snapshot.data ?? [];
@@ -86,8 +84,8 @@ class CategoryDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             FadeInImage(
-                              placeholder: const AssetImage(placeholder1),
-                              image: NetworkImage(listItems.first.images.first),
+                              placeholder: const AssetImage(placeholder),
+                              image: NetworkImage(listItems.first.image),
                               height: 150,
                               width: 150,
                               fit: BoxFit.cover,
@@ -113,12 +111,14 @@ class CategoryDetails extends StatelessWidget {
                             .make()
                             .onTap(
                               () => Get.to(
-                                () => ItemDetails(item: listItems[index]),
+                                () => ItemDetails(
+                                  itemId: listItems[index].itemId,
+                                ),
                               ),
                             ),
                       );
                     }
-                    return circularIndicator();
+                    return appLoading();
                   },
                 ),
               ),
@@ -128,7 +128,4 @@ class CategoryDetails extends StatelessWidget {
       ),
     );
   }
-
-  Center circularIndicator() =>
-      const Center(child: CircularProgressIndicator(color: mehroonColor));
 }

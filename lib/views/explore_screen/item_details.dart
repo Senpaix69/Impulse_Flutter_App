@@ -1,89 +1,115 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
 import 'package:impulse/controllers/item_controller.dart';
-import 'package:impulse/models/item.dart';
+import 'package:impulse/models/item_details.dart';
+import 'package:impulse/services/item_service.dart';
 import 'package:impulse/views/explore_screen/widgets/action_button.dart';
 import 'package:impulse/views/explore_screen/widgets/color_quantity.dart';
 import 'package:impulse/views/explore_screen/widgets/items_swiper.dart';
+import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/custom_button.dart';
+import 'package:impulse/widget_common/error_message.dart';
 import 'package:impulse/widget_common/products_list.dart';
 
 class ItemDetails extends StatelessWidget {
-  final Item item;
-  const ItemDetails({Key? key, required this.item}) : super(key: key);
+  final String itemId;
+  const ItemDetails({Key? key, required this.itemId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ItemController());
+    final itemService = ItemService();
 
     return Scaffold(
       appBar: myAppBar(context),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         color: whiteColor,
-        child: Stack(
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: FutureBuilder<ItemDetail>(
+          future: itemService.getItemDetail(itemId: itemId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.connectionState == ConnectionState.active) {
+              return appLoading();
+            }
+            if (snapshot.hasError) {
+              return errorMessage(text: snapshot.error.toString());
+            }
+            if (snapshot.hasData) {
+              ItemDetail item = snapshot.data!;
+              return Stack(
                 children: <Widget>[
-                  CustomSwiper(sliderList: item.images),
-                  10.heightBox,
-                  itemTitleAndRating().box.white.outerShadow.p16.make(),
-                  saleType().box.p12.color(lightGrey).make(),
-                  ColorAndQuantity(
-                    colors: item.colors,
-                    price: item.price.toDouble(),
-                    available: item.availableQuantity,
-                  ),
-                  20.heightBox,
-                  Obx(
-                    () => Container(
-                      height: controller.show ? null : 200.0,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 16),
-                      color: whiteColor,
-                      child: SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                description.text
-                                    .fontFamily(bold)
-                                    .size(16)
-                                    .overflow(TextOverflow.ellipsis)
-                                    .make(),
-                                (controller.show ? showLess : showMore)
-                                    .text
-                                    .color(mehroonDark)
-                                    .align(TextAlign.right)
-                                    .make()
-                                    .onTap(() => controller.toggleHeight()),
-                              ],
-                            ),
-                            5.heightBox,
-                            item.description.text.make(),
-                          ],
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        CustomSwiper(sliderList: item.images),
+                        10.heightBox,
+                        itemTitleAndRating(
+                          title: item.title,
+                          price: item.price,
+                          rating: item.rating,
                         ),
-                      ),
-                    ).box.outerShadow.make(),
+                        saleType(productType: item.productType),
+                        ColorAndQuantity(
+                          colors: item.colors,
+                          price: item.price.toDouble(),
+                          available: item.availableQuantity,
+                        ),
+                        20.heightBox,
+                        Obx(
+                          () => Container(
+                            height: controller.show ? null : 200.0,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 16),
+                            color: whiteColor,
+                            child: SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      description.text
+                                          .fontFamily(bold)
+                                          .size(16)
+                                          .overflow(TextOverflow.ellipsis)
+                                          .make(),
+                                      (controller.show ? showLess : showMore)
+                                          .text
+                                          .color(mehroonDark)
+                                          .align(TextAlign.right)
+                                          .make()
+                                          .onTap(
+                                              () => controller.toggleHeight()),
+                                    ],
+                                  ),
+                                  5.heightBox,
+                                  item.description.text.make(),
+                                ],
+                              ),
+                            ),
+                          ).box.outerShadow.make(),
+                        ),
+                        itemButtons().box.p12.make(),
+                        10.heightBox,
+                        productLists(
+                          title: sugProd,
+                          color: whiteColor,
+                          titleColor: mehroonColor,
+                        ),
+                        40.heightBox,
+                      ],
+                    ).box.p4.white.make(),
                   ),
-                  itemButtons().box.p12.make(),
-                  10.heightBox,
-                  productLists(
-                    title: sugProd,
-                    color: whiteColor,
-                    titleColor: mehroonColor,
-                  ),
-                  40.heightBox,
+                  bottomActions(),
                 ],
-              ).box.p4.white.make(),
-            ),
-            bottomActions(),
-          ],
+              );
+            }
+            return appLoading();
+          },
         ),
       ),
     );
@@ -107,14 +133,14 @@ class ItemDetails extends StatelessWidget {
     );
   }
 
-  Row saleType() {
+  Widget saleType({required String productType}) {
     return Row(
       children: <Widget>[
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             "Sale".text.color(darkFontGrey).make(),
-            item.productType.text.color(darkFontGrey).make(),
+            productType.text.color(darkFontGrey).make(),
           ],
         ),
         const Spacer(),
@@ -123,31 +149,30 @@ class ItemDetails extends StatelessWidget {
           color: Colors.black,
         ).box.white.p8.size(50, 50).roundedFull.make(),
       ],
-    );
+    ).box.p12.color(lightGrey).make();
   }
 
-  Column itemTitleAndRating() {
+  Widget itemTitleAndRating({
+    required String title,
+    required double price,
+    required double rating,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        item.title.text.fontFamily(bold).color(darkFontGrey).size(16).make(),
+        title.text.fontFamily(bold).color(darkFontGrey).size(16).make(),
         10.heightBox,
         VxRating(
           isSelectable: false,
           maxRating: 5.0,
-          value: item.rating,
+          value: rating,
           onRatingUpdate: (value) {},
         ),
         10.heightBox,
-        "\$${item.price}"
-            .text
-            .fontFamily(bold)
-            .color(mehroonColor)
-            .size(16)
-            .make(),
+        "\$$price".text.fontFamily(bold).color(mehroonColor).size(16).make(),
         10.heightBox,
       ],
-    );
+    ).box.white.outerShadow.p16.make();
   }
 
   AppBar myAppBar(BuildContext context) {

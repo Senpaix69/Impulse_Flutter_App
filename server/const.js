@@ -18,6 +18,7 @@ const GET_ITEM = "/api/getItem";
 const GET_ALL_ITEMS = "/api/getAllItems";
 const DELETE_ITEM = "/api/deleteItem";
 const UPDATE_ITEM = "/api/updateItem";
+const GET_ITEM_DETAILS = "/api/getItemDetails";
 
 module.exports = {
   PASSWORD_KEY,
@@ -34,4 +35,5 @@ module.exports = {
   GET_ITEM,
   GET_ALL_ITEMS,
   UPDATE_ITEM,
+  GET_ITEM_DETAILS,
 };

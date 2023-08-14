@@ -4,7 +4,9 @@ import 'package:impulse/controllers/home_controller.dart';
 import 'package:impulse/models/category.dart';
 import 'package:impulse/services/explore_service.dart';
 import 'package:impulse/views/explore_screen/category_details.dart';
+import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
+import 'package:impulse/widget_common/error_message.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -30,16 +32,12 @@ class ExploreScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting ||
                 snapshot.connectionState == ConnectionState.active) {
-              return circularIndicator();
-            } else if (snapshot.hasError) {
-              return Center(
-                child: "Network Connection Error"
-                    .text
-                    .size(18)
-                    .color(darkFontGrey)
-                    .make(),
-              );
-            } else if (snapshot.hasData) {
+              return appLoading();
+            }
+            if (snapshot.hasError) {
+              return errorMessage(text: snapshot.error.toString());
+            }
+            if (snapshot.hasData) {
               final List<Category> categories = snapshot.data ?? [];
               return Container(
                 padding: const EdgeInsets.all(10),
@@ -55,7 +53,7 @@ class ExploreScreen extends StatelessWidget {
                   itemBuilder: (context, index) => Column(
                     children: <Widget>[
                       FadeInImage(
-                        placeholder: const AssetImage(placeholder1),
+                        placeholder: const AssetImage(placeholder),
                         image: NetworkImage(categories[index].imageUrl),
                         height: 120,
                         width: 200,
@@ -88,14 +86,11 @@ class ExploreScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return circularIndicator();
+              return appLoading();
             }
           },
         ),
       ),
     );
   }
-
-  Center circularIndicator() =>
-      const Center(child: CircularProgressIndicator(color: mehroonColor));
 }
