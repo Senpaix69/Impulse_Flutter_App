@@ -8,7 +8,6 @@ import 'package:impulse/views/explore_screen/item_details.dart';
 import 'package:impulse/views/explore_screen/widgets/subcategories_list.dart';
 import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
-import 'package:impulse/widget_common/error_message.dart';
 
 class CategoryDetails extends StatelessWidget {
   final String title;
@@ -70,6 +69,9 @@ class CategoryDetails extends StatelessWidget {
                     }
                     if (snapshot.hasData) {
                       final listItems = snapshot.data ?? [];
+                      if (listItems.isEmpty) {
+                        return showEmptyMessage();
+                      }
                       return GridView.builder(
                         shrinkWrap: true,
                         itemCount: listItems.length,
@@ -85,7 +87,7 @@ class CategoryDetails extends StatelessWidget {
                           children: <Widget>[
                             FadeInImage(
                               placeholder: const AssetImage(placeholder),
-                              image: NetworkImage(listItems.first.image),
+                              image: NetworkImage(listItems[index].image),
                               height: 150,
                               width: 150,
                               fit: BoxFit.cover,
@@ -95,8 +97,13 @@ class CategoryDetails extends StatelessWidget {
                                 .fontFamily(semibold)
                                 .color(darkFontGrey)
                                 .make(),
-                            5.heightBox,
-                            '\$${listItems.first.price}'
+                            VxRating(
+                              onRatingUpdate: (value) {},
+                              maxRating: 5.0,
+                              value: listItems[index].rating,
+                              isSelectable: false,
+                            ),
+                            '\$${listItems[index].price}'
                                 .text
                                 .color(mehroonColor)
                                 .fontFamily(bold)

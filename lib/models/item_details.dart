@@ -78,9 +78,9 @@ class ItemDetail {
       title: json[itemTitleColumn],
       images: List<String>.from(json[itemImagesColumn]),
       rating: json[itemRatingColumn],
-      price: json['price'] is int
-          ? (json['price'] as int).toDouble()
-          : json['price'],
+      price: json[itemPriceColumn] is int
+          ? (json[itemPriceColumn] as int).toDouble()
+          : json[itemPriceColumn],
       productType: json[itemProductTypeColumn],
       colors: List<String>.from(json[itemColorsColumn]),
       availableQuantity: json[itemAvailableQuantityColumn],

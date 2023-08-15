@@ -16,7 +16,7 @@ class ExploreService {
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('$myAPI$url$queryParams'),
+        Uri.parse('$horokuAddr$url$queryParams'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
 

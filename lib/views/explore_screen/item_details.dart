@@ -8,7 +8,6 @@ import 'package:impulse/views/explore_screen/widgets/color_quantity.dart';
 import 'package:impulse/views/explore_screen/widgets/items_swiper.dart';
 import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/custom_button.dart';
-import 'package:impulse/widget_common/error_message.dart';
 import 'package:impulse/widget_common/products_list.dart';
 
 class ItemDetails extends StatelessWidget {

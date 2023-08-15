@@ -18,10 +18,13 @@ const userDProfileUrlColumn = "downloadableProfileUrl";
 
 // items constants
 const itemIdColumn = "_id";
+const itemDetailsIdColumn = "itemId";
 const itemCategoryIdColumn = "categoryId";
 const itemTitleColumn = "title";
 const itemImagesColumn = "images";
+const itemImageColumn = "image";
 const itemRatingColumn = "rating";
+const itemSubCatIdColumn = "subCatId";
 const itemPriceColumn = "price";
 const itemProductTypeColumn = "productType";
 const itemColorsColumn = "colors";

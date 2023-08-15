@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' show immutable;
+import 'package:impulse/consts/models.dart';
 
 @immutable
 class Item {
@@ -24,28 +25,28 @@ class Item {
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-      id: json['_id'],
-      title: json['title'],
-      image: json['image'],
-      categoryId: json['categoryId'],
-      itemId: json['itemId'],
-      subCatId: json['subCatId'],
-      rating: json['rating'] ?? 0.0,
-      price: json['price'] is int
-          ? (json['price'] as int).toDouble()
-          : json['price'],
+      id: json[itemIdColumn],
+      title: json[itemTitleColumn],
+      image: json[itemImageColumn],
+      categoryId: json[itemCategoryIdColumn],
+      itemId: json[itemDetailsIdColumn],
+      subCatId: json[itemSubCatIdColumn],
+      rating: json[itemRatingColumn] ?? 0.0,
+      price: json[itemPriceColumn] is int
+          ? (json[itemPriceColumn] as int).toDouble()
+          : json[itemPriceColumn],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'title': title,
-      'image': image,
-      'categoryId': categoryId,
-      'itemId': itemId,
-      'subCatId': subCatId,
-      'rating': rating,
-      'price': price,
+      itemTitleColumn: title,
+      itemImageColumn: image,
+      itemCategoryIdColumn: categoryId,
+      itemDetailsIdColumn: itemId,
+      itemSubCatIdColumn: subCatId,
+      itemRatingColumn: rating,
+      itemPriceColumn: price,
     };
   }
 
