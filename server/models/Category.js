@@ -10,6 +10,11 @@ const categorySchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  adminId: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   subcategories: [
     {
       title: {

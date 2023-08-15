@@ -1,5 +1,6 @@
 // category constants
 const categoryIdColumn = "_id";
+const categoryAdminIdColumn = "adminId";
 const categoryImageColumn = "imageUrl";
 const categoryTitleColumn = "title";
 const categorySubCatColumn = "subcategories";

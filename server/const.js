@@ -3,6 +3,7 @@ const PASSWORD_KEY = "passwordKey";
 // auth routes
 const SIGN_UP = "/api/signup";
 const SIGN_IN = "/api/signin";
+const GET_USER = "/api/getUser";
 const UPDATE_USER = "/api/updateUser";
 
 // explore routes
@@ -34,6 +35,7 @@ module.exports = {
   DELETE_ITEM,
   GET_ITEM,
   GET_ALL_ITEMS,
+  GET_USER,
   UPDATE_ITEM,
   GET_ITEM_DETAILS,
 };
