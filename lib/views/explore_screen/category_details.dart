@@ -31,6 +31,7 @@ class CategoryDetails extends StatelessWidget {
         body: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               FutureBuilder<List<SubCategory>>(
                 future: exploreService.getSubCategories(id: id),

@@ -11,11 +11,12 @@ const {
 
 exploreRouter.post(ADD_CATEGORY, async (req, res) => {
   try {
-    const { imageUrl, title, subcategories } = req.body;
+    const { imageUrl, title, adminId, subcategories } = req.body;
 
     const newCategory = new Category({
       imageUrl,
       title,
+      adminId,
       subcategories: subcategories || [],
     });
 

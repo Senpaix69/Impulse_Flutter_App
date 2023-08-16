@@ -11,14 +11,14 @@ SingleChildScrollView subCategories(
           (index) => subcategories[index]
               .title
               .text
-              .size(12)
-              .fontFamily(semibold)
+              .size(14)
+              .fontFamily(bold)
               .color(darkFontGrey)
               .makeCentered()
               .box
               .white
               .roundedSM
-              .size(120, 60)
+              .size(100, 40)
               .margin(const EdgeInsets.symmetric(horizontal: 4.0))
               .make()),
     ),
