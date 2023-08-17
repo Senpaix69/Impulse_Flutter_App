@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
 import 'package:impulse/consts/consts.dart';
+import 'package:impulse/controllers/explore_controller.dart';
 import 'package:impulse/controllers/home_controller.dart';
-import 'package:impulse/models/category.dart';
-import 'package:impulse/services/explore_service.dart';
-import 'package:impulse/views/explore_screen/category_details.dart';
+import 'package:impulse/views/explore_screen/widgets/categories_list.dart';
 import 'package:impulse/widget_common/app_loading.dart';
 import 'package:impulse/widget_common/bg_widget.dart';
 
@@ -13,9 +12,12 @@ class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
-    final exploreService = ExploreService();
+    final exploreController = Get.put(ExploreController());
 
     void goToHome() => controller.currentNavIndex.value = 0;
+
+    Future<void> getRefresh() async =>
+        await exploreController.fetchCategories();
 
     return bgWidget(
       child: Scaffold(
@@ -26,71 +28,15 @@ class ExploreScreen extends StatelessWidget {
           ),
           title: "Explore".text.color(whiteColor).fontFamily(semibold).make(),
         ),
-        body: FutureBuilder<List<Category>>(
-          future: exploreService.getAllCategories(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                snapshot.connectionState == ConnectionState.active) {
-              return appLoading();
-            }
-            if (snapshot.hasError) {
-              return errorMessage(text: snapshot.error.toString());
-            }
-            if (snapshot.hasData) {
-              final List<Category> categories = snapshot.data ?? [];
-              if (categories.isEmpty) {
-                return showEmptyMessage();
-              }
-              return Container(
-                padding: const EdgeInsets.all(10),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: categories.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 8.0,
-                    mainAxisExtent: 190,
-                    crossAxisSpacing: 8.0,
-                  ),
-                  itemBuilder: (context, index) => Column(
-                    children: <Widget>[
-                      FadeInImage(
-                        placeholder: const AssetImage(placeholder),
-                        image: NetworkImage(categories[index].imageUrl),
-                        height: 120,
-                        width: 200,
-                        fit: BoxFit.cover,
-                      ),
-                      10.heightBox,
-                      categories[index]
-                          .title
-                          .text
-                          .color(darkFontGrey)
-                          .align(TextAlign.center)
-                          .make(),
-                    ],
-                  )
-                      .box
-                      .white
-                      .roundedSM
-                      .padding(const EdgeInsets.all(6))
-                      .outerShadow
-                      .clip(Clip.antiAlias)
-                      .make()
-                      .onTap(
-                        () => Get.to(
-                          () => CategoryDetails(
-                            title: categories[index].title,
-                            id: categories[index].id,
-                          ),
-                        ),
-                      ),
-                ),
-              );
-            } else {
-              return appLoading();
-            }
-          },
+        body: RefreshIndicator(
+          onRefresh: getRefresh,
+          child: Obx(
+            () => exploreController.loading
+                ? appLoading()
+                : exploreController.catList.isEmpty
+                    ? showEmptyMessage()
+                    : showCategories(exploreController),
+          ),
         ),
       ),
     );

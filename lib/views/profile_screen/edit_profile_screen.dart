@@ -142,7 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         });
       }
     } catch (e) {
-      showSnackbar(context: context, message: e.toString());
+      showSnack(message: e.toString());
     }
   }
 
