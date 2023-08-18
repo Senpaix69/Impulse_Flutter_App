@@ -12,13 +12,16 @@ SingleChildScrollView subCategories(
               .title
               .text
               .size(14)
-              .fontFamily(bold)
+              .overflow(TextOverflow.ellipsis)
+              .fontFamily(semibold)
               .color(darkFontGrey)
               .makeCentered()
               .box
               .white
               .roundedSM
-              .size(100, 40)
+              .height(40)
+              .withConstraints(const BoxConstraints(minWidth: 100))
+              .padding(const EdgeInsets.symmetric(horizontal: 10.0))
               .margin(const EdgeInsets.symmetric(horizontal: 4.0))
               .make()),
     ),
