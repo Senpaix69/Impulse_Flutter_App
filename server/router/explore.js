@@ -12,7 +12,6 @@ const {
 exploreRouter.post(ADD_CATEGORY, async (req, res) => {
   try {
     const { imageUrl, title, adminId, subcategories } = req.body;
-
     const newCategory = new Category({
       imageUrl,
       title,
@@ -24,7 +23,7 @@ exploreRouter.post(ADD_CATEGORY, async (req, res) => {
 
     res.json({ msg: "Category added successfully", category: newCategory });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error);
   }
 });
 
@@ -39,7 +38,7 @@ exploreRouter.get(`${GET_CATEGORY}/:id`, async (req, res) => {
 
     res.json({ category });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error);
   }
 });
 
@@ -49,15 +48,15 @@ exploreRouter.get(GET_ALL_CATEGORIES, async (req, res) => {
 
     res.json(categories);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error);
   }
 });
 
 exploreRouter.post(UPDATE_CATEGORY, async (req, res) => {
   try {
     const { _id, imageUrl, title, subcategories } = req.body;
-
     const existingCategory = await Category.findById(_id);
+
     if (!existingCategory) {
       return res.status(400).json({ msg: "Category not found" });
     }
@@ -68,24 +67,28 @@ exploreRouter.post(UPDATE_CATEGORY, async (req, res) => {
 
     await existingCategory.save();
     res.json({ ...existingCategory._doc });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+  } catch (error) {
+    handleError(res, error);
   }
 });
 
 exploreRouter.post(DELETE_CATEGORY, async (req, res) => {
   try {
     const { _id } = req.body;
-
     const result = await Category.deleteOne({ _id });
+
     if (result.deletedCount === 0) {
       return res.status(400).json({ msg: "Category not found" });
     }
 
     res.json({ msg: "Deleted Successfully" });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+  } catch (error) {
+    handleError(res, error);
   }
 });
+
+function handleError(res, error) {
+  res.status(500).json({ error: error.message });
+}
 
 module.exports = exploreRouter;

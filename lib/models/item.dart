@@ -31,7 +31,9 @@ class Item {
       categoryId: json[itemCategoryIdColumn],
       itemId: json[itemDetailsIdColumn],
       subCatId: json[itemSubCatIdColumn],
-      rating: json[itemRatingColumn] ?? 0.0,
+      rating: json[itemRatingColumn] is int
+          ? (json[itemRatingColumn] as int).toDouble()
+          : json[itemRatingColumn],
       price: json[itemPriceColumn] is int
           ? (json[itemPriceColumn] as int).toDouble()
           : json[itemPriceColumn],
