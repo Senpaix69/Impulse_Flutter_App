@@ -94,7 +94,9 @@ class CategoryDetails extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                             const Spacer(),
-                            listItems.first.title.text
+                            listItems[index]
+                                .title
+                                .text
                                 .fontFamily(semibold)
                                 .color(darkFontGrey)
                                 .make(),
