@@ -18,7 +18,7 @@ class ItemService {
   ) async {
     try {
       final response = await http.get(
-        Uri.parse('$horokuAddr$url$queryParams'),
+        Uri.parse('$ip$url$queryParams'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ).timeout(const Duration(seconds: 10));
 

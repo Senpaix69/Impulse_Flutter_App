@@ -176,6 +176,7 @@ class ItemDetails extends StatelessWidget {
 
   AppBar myAppBar(BuildContext context) {
     return AppBar(
+      surfaceTintColor: whiteColor,
       elevation: 0.0,
       leading: IconButton(
         icon: const Icon(
