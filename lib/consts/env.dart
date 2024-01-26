@@ -1,4 +1,4 @@
-const myAPI = "http://192.168.100.18:5000";
+const myAPI = "http://192.168.1.5:3001";
 const herokuAddr = "https://impulse-senpai-e6a2f49e21ab.herokuapp.com";
 const ip = myAPI;
 

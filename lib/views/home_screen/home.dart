@@ -56,6 +56,7 @@ class Home extends StatelessWidget {
       const ProfileScreen(),
     ];
 
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         if (controller.currentNavIndex.value == 0) {
